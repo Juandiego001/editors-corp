@@ -1,0 +1,65 @@
+.formRegistro h1 {
+    margin: 0;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.formRegistro {
+    width: 600px;
+    background: gainsboro;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    box-shadow: 7px 13px 37px #000; 
+    padding: 30px 50px;
+    border-top: 4px solid #017bab;
+    color: black;
+}
+
+.formRegistro p{
+    margin-bottom: 15px;
+    margin-top: 15px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.mensaje {
+    height: auto;
+    text-align: center;
+    font-weight: normal;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+
+.registro {
+    width: 30%;
+    border: 1px solid #017bab;
+    margin-bottom: 5px;
+    padding: 10px 8px;
+    background: white;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.historia {
+    width: 100%;
+    border: 1px solid #017bab;
+    margin-bottom: 15px;
+    padding: 30px 10px;
+    background: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.botonr {
+    width: 30%;
+    height: 40px;
+    background: #017bab;
+    border: none;
+    color: white;
+    margin-bottom: 16px;
+    margin-top: 10px;
+}

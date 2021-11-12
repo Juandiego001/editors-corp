@@ -25,8 +25,14 @@ class UsuarioService {
     }
 
     // Registrarse
+    async singUp(datosJson){
+        console.log(datosJson);
+        return await axios
+                        .post('http://localhost:3000/usuario', datosJson);
+    }
 
-    // Insertar    
 }
+
+    // Insertar
 
 export default new UsuarioService();

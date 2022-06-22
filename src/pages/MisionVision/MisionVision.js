@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './MisionVision.module.css';
 import Menu from '../../components/Menu/Menu';
-import MenuNav from '../../components/MenuNav/MenuNav';
 import Footer from '../../components/Footer/Footer';
 
 const MisionVision = () => {
@@ -13,7 +12,7 @@ const MisionVision = () => {
   return (
   <>
     <Menu nick={location.state.nick}></Menu>
-    <MenuNav nick={location.state.nick}></MenuNav>
+    
 
     {/* <!-- Contenedor de misión y visión --> */}
     <div className={styles.divMyv}>

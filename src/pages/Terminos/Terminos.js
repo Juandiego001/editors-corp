@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './Terminos.module.css';
 import Menu from '../../components/Menu/Menu';
-import MenuNav from '../../components/MenuNav/MenuNav';
 import Footer from '../../components/Footer/Footer';
 
 const Terminos = () => {
@@ -13,7 +12,7 @@ const Terminos = () => {
     return(
   <>
     <Menu nick={location.state.nick}></Menu>
-    <MenuNav nick={location.state.nick}></MenuNav>
+    
 
     <div className="py-4">
         <h1 className="text-center"> Términos de servicio</h1>

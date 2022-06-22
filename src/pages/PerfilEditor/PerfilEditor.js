@@ -1,27 +1,18 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import styles from './PerfilEditor.module.css';
 import Menu from '../../components/Menu/Menu';
-import MenuNav from '../../components/MenuNav/MenuNav';
 import Footer from '../../components/Footer/Footer';
 import TratoService from '../../services/Trato.Service';
 
 const PerfilEditor = () => {
 
     const location = useLocation();
-    const history = useHistory();
     let tratosActivos;
     let hacia = '';
 
-    function navegarMenu() {
-        history.push({
-            pathname: '/' + hacia,
-            state: {
-                nickCliente: location.state.nick
-            }
-        });
+    function navegarMenu() {        
     }
 
     function setTratosActivos() {
@@ -41,7 +32,7 @@ const PerfilEditor = () => {
     return (
         <>
         <Menu nick={location.state.nick}></Menu>
-        <MenuNav nick={location.state.nick}></MenuNav>
+        
     
         {/* <!-- Perfil del editor --> */}
         <section className="w-100 py-4">

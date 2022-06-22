@@ -1,17 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import styles from './Trato.module.css';
 import TratoService from '../../services/Trato.Service';
 
 const Trato = () => {
-
   const [titulo, setTitulo] = React.useState();
   const [precio, setPrecio] = React.useState();
   const [descripcion, setDescripcion] = React.useState();
   
-  const history = useHistory();
   const location = useLocation();
 
   function handleTitulo(event) {
@@ -27,22 +24,13 @@ const Trato = () => {
   }
 
   function siguiente(event) {
-    history.push({
-      pathname: 'metodos-pagos',
-      state: {
-        nickCliente: location.state.nickCliente,
-        titulo: titulo,
-        precio: precio,
-        descripcion: descripcion 
-      }
-    });
 
     alert('Se pasó al apartado de métodos de pagos con éxito!');
     event.preventDefault();
   }
 
   function cancelar(event) {
-    history.push('/iniciar-sesion');
+    
     event.preventDefault();
   }
 

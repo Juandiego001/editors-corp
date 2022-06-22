@@ -1,23 +1,21 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import styles from './Menu.module.css';
 import PropTypes from 'prop-types';
-import './Menu.css';
-import '@fortawesome/fontawesome-free/css/all.css';
+
+// Bootstrap
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+
+// Font-Awesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const Menu = (props) => {
-
-    const location = useLocation();
-    const history = useHistory();
     let hacia = '';
 
     const navegarMenu = () => {    
-        history.push({
-          pathname: '/' + hacia,
-          state: {
-            nick: props.nick
-          }
-        });
+        
     }
 
     function comprobarInicio() {
@@ -40,46 +38,20 @@ const Menu = (props) => {
     };
 
     return (
-    <>
-        <header className="row bg-primary container-fluid m-0 p-0">
-            {/* Se encierra el botón del para desplegar el menú en un h1 para tener una fuente de texto más grande */}
-            <h1 className="col-1 p-0 m-0 d-flex justify-content-center align-items-center bg-info">
-                <button className="btn p-0 border-0 w-100 h-100 text-light btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                <i className="fa fa-bars"></i>
-                </button>
-            </h1>        
-            
-            {/* Botón para buscar */}
-            <h1 className="col-1 p-0 m-0 d-flex justify-content-center align-items-center bg-info">
-                <button className="btn p-0 border-0 w-100 h-100 text-light btn-info" type="button">
-                <i className="fa fa-search"></i>
-                </button>
-            </h1>
+        <Navbar bg="primary" className="text-light" expand="lg">
+            <Container className="col">
+                <Navbar.Brand className="ms-2 text-light" href="#">Editor's Corp</Navbar.Brand>
+                <Navbar.Toggle className="text-light" aria-controls="basic-navbar-nav" />
+            </Container>
 
-            {/* Texto de editors corp */}
-            <h1 className="col-7 text-center text-light d-flex justify-content-center align-items-center p-0 m-0">
-                <a onClick={() => {
-                        hacia = 'index';
-                        navegarMenu();
-                    }
-                } className="nav-link text-light">Editor's Corp</a>
-            </h1>
-
-            {/* Inicio de sesión - Reigstrarse - Ver mensajes */}
-            <div className="col p-0 bg-info">
-                <nav className="row h-50 navbar navbar-expand-xl p-0 m-0 bg-info">
-                    { comprobarInicio() }
-                </nav>
-
-                <h5 className="row h-50 d-flex w-100 p-0 m-0 justify-content-center align-items-center">
-                    <button className="btn btn-info w-100 h-100">
-                        <i className="fa fa-comments text-light"></i>
-                        <span className="text-light">&emsp;Mensajes</span>
-                    </button>
-                </h5>
-            </div>
-        </header>
-    </>
+            <Navbar.Collapse className="col flex-row-reverse">
+                <Nav className="mx-2">
+                    <Nav.Link className="text-light btn btn-primary">Búsqueda de editores</Nav.Link>
+                    <Nav.Link href="/tipos-editores" className="text-light btn btn-primary">Tipos de editores</Nav.Link>
+                    <Nav.Link className="text-light btn btn-primary">Mi perfil</Nav.Link>
+                </Nav>
+            </Navbar.Collapse>
+        </Navbar>
     )};
 
 Menu.propTypes = {};

@@ -1,74 +1,138 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './InicioSesion.module.css';
+import { useCookies } from 'react-cookie';
+
+// React-bootstrap
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+
+// Services
 import UsuarioService from '../../services/Usuario.Service';
 
 const InicioSesion = (props) => {
-  const history = useHistory();
+  const [cookies, setCookies] = useCookies();
+  const navigate = useNavigate();
 
-  // Variables para valores de input de nickname y password
-  const [nickName, setNickName] = React.useState();
-  const [contrasena, setContrasena] = React.useState()
+  const [nickname, setNickname] = useState('');
+  const [contrasena, setContrasena] = useState('');
 
-  // Se encargan de actualizar el estado
-  function handleNickName(event){
-    setNickName(event.target.value);
+  // Modals
+  /*
+    1. Inicio de sesión exitoso
+    2. Usuario o contraseña incorrectos
+    3. Ocurrió un error en el servidor
+    4. Por favor digite un usuario y una contrasena
+  */ 
+  const [incorrectos, setIncorrectos] = useState(false);
+  const [error, setError] = useState(false);
+  const [exitoso, setExitoso] = useState(false);
+  const [digite, setDigite] = useState(false);
+
+  // Funciones Handle
+  function handlenickname(event){
+    setNickname(event.target.value);
   }
 
   function handleContrasena(event){
     setContrasena(event.target.value);
   }
 
-  // Se verifica si el NickName existe
-  function verificarNick(event){
-    const siExisteNick = UsuarioService.verificarNick(nickName);
-    siExisteNick.then(resNick => {
-        if (resNick.data == '') {
-          alert('Lo sentimos. El nick digitado no existe');
-        } else {
-          console.log(resNick.data);
-          console.log("Contrasena");
-          console.log(contrasena);
-          const contrasenaCorrecta = UsuarioService.logIn(nickName, contrasena);
+  function handleModals(id) {
+    // Se crea un diccionario con todos los modals
+    let modals = {
+      1: [exitoso, setExitoso],
+      2: [incorrectos, setIncorrectos],
+      3: [error, setError],
+      4: [digite, setDigite]
+    };
 
-          contrasenaCorrecta.then(resLogIn => {
-            if (resLogIn.data == '') {
-              alert('Lo sentimos. La contraseña es incorrecta');              
-              console.log(resLogIn);
-            } else {
-              alert('Inicio de sesión exitoso!');
-              console.log(resLogIn);
-              history.push({
-                pathname: '/index',
-                search: '?nick=true',  // query string
-                state: {  // location state
-                  nick: nickName
-                }
-              });
-            }
-          })
-        }
-      })
-      .catch(err => {
-        alert('Lo sentimos. Ocurrió un error');
-        console.log(err);
-      });
+    let func = modals[id][1];
+    let valor = !(modals[id][0]);
 
-    alert('Se ejecutó la función.');
+    func(valor);
+  }  
 
-    event.preventDefault();
+  /*
+    Función para iniciar sesión
+  */
+  function iniciarSesion(e){
+    // Primero se verifica que todos los campos estén completos
+    if (nickname === '' || contrasena === '') {
+      handleModals(4);
+    } else {
+      // Se intenta iniciar sesión con el nickname y la contraseña digitados
+      UsuarioService.login(nickname, contrasena)
+        .then(res => {
+          // res.data será true o false
+          console.log(res.data);
+          if (res.data) {
+            // Se logró iniciar sesión. Se setean las cookies
+            // y se envía al inicio
+            handleModals(1);
+
+            setCookies('nick', nickname, {
+              path: '/'
+            });
+
+            navigate('/index');
+          } else {
+            handleModals(2);
+          }
+        })        
+  
+        // Ocurrió un error al intentar iniciar sesión
+        .catch(err => {
+          handleModals(3);
+          console.log(err);
+        });
+    }
+
+    e.preventDefault();
   }
 
   return (
-    <form id="formInicio" className={styles.formLogin}>
-          <h1>Iniciar sesión</h1>
-          <input className={styles.control} type="text" name="nickname" id="nickname" placeholder="nickname" onChange={handleNickName}/>
-          <input className={styles.control} type="password" name="contrasena" id="contrasena" placeholder="contraseña" onChange={handleContrasena}/>
-          <input className={styles.botons} onClick={verificarNick} type="submit" value="Iniciar" />
-          <p><a href="#">¿Olvidó su contraseña?</a> ó  <a href="#/registrarse">¿No tiene cuenta?</a></p>
-    </form>
+    <div className="w-100 vh-100">
+      <div className="h-25 w-100 m-0">
+        <h1 className="bg-primary text-light d-flex justify-content-center align-items-center text-center py-3">Editor's Corp</h1>
+      </div>
+
+      {/* Formulario para iniciar sesión */}
+      <Form className="w-75 mx-auto h-75">
+        <Form.Group>
+          <Form.Label>Nickname</Form.Label>
+          <Form.Control name="nickname" id="nickname" type="text" placeholder="Ingresa tu nickname"  onChange={handlenickname} />
+        </Form.Group>
+
+        
+        <Form.Group>
+          <Form.Label>Contraseña</Form.Label>
+          <Form.Control name="pasword" id="password" type="password"  placeholder="******" onChange={handleContrasena} />
+        </Form.Group>
+
+        <Container className="mt-5 row">
+          <Container className="col text-center">
+            <Button className="w-75" onClick={iniciarSesion}>
+              Iniciar sesión
+            </Button>
+          </Container>
+
+          <Container className="col text-center">
+            <Button variant="light" className="w-75">
+              Registrarse
+            </Button>
+          </Container>
+
+        </Container>
+      </Form>
+    </div>
   )
 };
+
+InicioSesion.propTypes = {};
+
+InicioSesion.defaultProps = {};
 
 export default InicioSesion;

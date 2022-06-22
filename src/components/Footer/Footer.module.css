@@ -1,1 +1,36 @@
-.Footer {}
+.Footer {
+    background-color: gray;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    width: 100%;
+    color: white;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.Footer h1 {
+    align-self: center;
+    justify-self: center;
+    font-family: 'system-ui';
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.Footer div {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.Footer div ul {
+    list-style-type: none;
+    align-self: center;
+    width: 100%;
+    text-align: center;
+}
+
+.Footer div ul li {
+    font-family: 'system-ui';
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+}

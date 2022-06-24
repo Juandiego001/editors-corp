@@ -1,0 +1,3 @@
+.ColorBody {
+    filter: invert(11%) sepia(32%) saturate(233%) hue-rotate(169deg) brightness(94%) contrast(92%);
+}

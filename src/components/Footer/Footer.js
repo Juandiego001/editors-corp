@@ -16,7 +16,7 @@ const Footer = (props) => {
         <footer className="row bg-light w-100 align-items-center py-3 mt-5 w-100">
             {/* <!-- Brand --> */}
 
-            <Button className="col" variant="light" href="#" active>
+            <Button className="col" variant="light" href="/index" active>
                 <h1 className="text-dark">
                     Editor's Corp &copy;
                 </h1>
@@ -27,16 +27,16 @@ const Footer = (props) => {
             <Navbar className="col justify-content-center text-center" bg="light">
                 <Nav className="flex-column">
                     <Nav.Link className="text-dark">Búsqueda de editores</Nav.Link>
-                    <Nav.Link className="text-dark">Tipos de editores</Nav.Link>
-                    <Nav.Link className="text-dark">Misión y visión</Nav.Link>
+                    <Nav.Link href="/tipos-editores" className="text-dark">Tipos de editores</Nav.Link>
+                    <Nav.Link href="/mision-vision" className="text-dark">Misión y visión</Nav.Link>
                 </Nav>
             </Navbar>
 
             <Navbar className="col d-flex justify-content-center text-center" bg="light">
                 <Nav className="flex-column">
-                    <Nav.Link className="text-dark">Marco legal</Nav.Link>
-                    <Nav.Link className="text-dark">Contacto</Nav.Link>
-                    <Nav.Link className="text-dark">Quienes somos</Nav.Link>
+                    <Nav.Link href="/terminos" className="text-dark">Marco legal</Nav.Link>
+                    <Nav.Link href="/contacto" className="text-dark">Contacto</Nav.Link>
+                    <Nav.Link href="/quienes-somos" className="text-dark">Quienes somos</Nav.Link>
                 </Nav>
             </Navbar>
         </footer>

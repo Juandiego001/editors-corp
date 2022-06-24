@@ -40,7 +40,7 @@ const Menu = (props) => {
     return (
         <Navbar bg="primary" className="text-light" expand="lg">
             <Container className="col">
-                <Navbar.Brand className="ms-2 text-light" href="#">Editor's Corp</Navbar.Brand>
+                <Navbar.Brand className="ms-2 text-light" href="/index">Editor's Corp</Navbar.Brand>
                 <Navbar.Toggle className="text-light" aria-controls="basic-navbar-nav" />
             </Container>
 

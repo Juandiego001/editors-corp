@@ -30,65 +30,63 @@ const Contacto = () => {
 
       <Container className="p-0 card shadow-lg mt-5 px-5 py-5">
           <h2 className="text-center" fluid>
-            <b>
               Contacto
-            </b>
           </h2>
 
           <Container>
             <Row className="justify-content-center">
                 <Container className="p-0" fluid>
-                    <h3 className="d-flex align-items-center m-0" fluid>
+                    <h5 className="d-flex align-items-center m-0" fluid>
                       <FontAwesomeIcon  className="h1 m-0 p-0 me-2" icon={faEnvelope} />
                       <span className="p-0">
                           Editorscorp.col@gmail.com
                       </span>
-                    </h3>
+                    </h5>
                 </Container>
 
                 <Container className="p-0 mt-3" fluid>
-                    <h3 className="d-flex align-items-center m-0" fluid>
+                    <h5 className="d-flex align-items-center m-0" fluid>
                       <FontAwesomeIcon  className="h1 m-0 p-0 me-2" icon={faPhone} />
                       <span className="p-0">
                           +57 3167461609
                       </span>
-                    </h3>
+                    </h5>
                   </Container>
               
                   <Container className="p-0 mt-3" fluid>
-                    <h3 className="d-flex align-items-center m-0" fluid>
+                    <h5 className="d-flex align-items-center m-0" fluid>
                       <FaDiscord className="h1 m-0 p-0 me-2" />
                       <span className="p-0">
                           Discord: Editor's Corp
                       </span>
-                    </h3>
+                    </h5>
                   </Container>
               
                   <Container className="p-0 mt-3" fluid>
-                    <h3 className="d-flex align-items-center m-0" fluid>
+                    <h5 className="d-flex align-items-center m-0" fluid>
                       <FaTwitter className="h1 m-0 p-0 me-2" />
                       <span className="p-0">
                           Twitter: Editor's Corp
                       </span>
-                    </h3>
+                    </h5>
                   </Container>
 
                   <Container className="p-0 mt-3" fluid>
-                    <h3 className="d-flex align-items-center m-0" fluid>
+                    <h5 className="d-flex align-items-center m-0" fluid>
                       <FaFacebook className="h1 m-0 p-0 me-2" />
                       <span className="p-0">
                           Facebook: Editor's Corp
                       </span>
-                    </h3>
+                    </h5>
                   </Container>
 
                   <Container className="p-0 mt-3" fluid>
-                    <h3 className="d-flex align-items-center m-0" fluid>
+                    <h5 className="d-flex align-items-center m-0" fluid>
                       <FaYoutube className="h1 m-0 p-0 me-2" />
                       <span className="p-0">
                           Youtube: Editor's Corp
                       </span>
-                    </h3>
+                    </h5>
                   </Container>
             </Row>
           </Container>

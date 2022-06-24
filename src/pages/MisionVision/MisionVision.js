@@ -18,7 +18,7 @@ const MisionVision = () => {
     {/* <!-- Contenedor de misión y visión --> */}
     <Container className="mt-5 py-5 card shadow-lg">
         <h2 className="text-center" fluid>
-          <b>Misión</b>
+          Misión
         </h2>
 
         <p className="text-justify px-5">
@@ -28,7 +28,7 @@ const MisionVision = () => {
         </p>
 
         <h2 className="text-center mt-5" fluid>
-          <b>Visión</b>
+          Visión
         </h2>
 
         <p className="text-justify px-5">

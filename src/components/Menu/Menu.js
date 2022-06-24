@@ -48,7 +48,7 @@ const Menu = (props) => {
                 <Nav className="mx-2">
                     <Nav.Link className="text-light btn btn-primary">Búsqueda de editores</Nav.Link>
                     <Nav.Link href="/tipos-editores" className="text-light btn btn-primary">Tipos de editores</Nav.Link>
-                    <Nav.Link className="text-light btn btn-primary">Mi perfil</Nav.Link>
+                    <Nav.Link href="/mi-perfil/1" className="text-light btn btn-primary">Mi perfil</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

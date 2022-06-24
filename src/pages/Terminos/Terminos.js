@@ -22,7 +22,7 @@ const Terminos = () => {
         <div className="card shadow-lg p-5 mx-5 mb-5">
             <p>
                 <h2>
-                    <b>Términos y condiciones</b>
+                    Términos y condiciones
                 </h2>
 
                 <br/><br/>

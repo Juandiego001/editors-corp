@@ -20,7 +20,7 @@ function App() {
 
         <Route path='/index' element={<Index />} />
 
-        <Route path='/perfil-editor' element={<PerfilEditor />} />
+        <Route path='/mi-perfil/:miperfil' element={<PerfilEditor />} />
         
         <Route path='/registrarse' element={<Registrarse />} />
 

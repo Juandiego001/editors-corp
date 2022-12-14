@@ -1,14 +1,11 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { React, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './TiposEditores.module.css';
+import { Link, useLocation } from 'react-router-dom';
+
+// Custom components
 import Menu from '../../components/Menu/Menu';
 import Footer from '../../components/Footer/Footer';
-
-// React-boostrap
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-
 
 // Font-awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -29,103 +26,108 @@ const TiposEditores = () => {
 
     const location = useLocation();
 
+    useEffect(() => {
+        document.title = "Tipos de editores | Editor's Corp";
+        window.scrollTo(0,0);
+    }, []);
+
     return (
-        <Container className="p-0" fluid>
+        <div className="container-fluid p-0">
             <Menu></Menu>
 
             {/* <!-- Section donde se mostrarán las categorías de los tipos de editores --> */}
-            <Container fluid>
+            <div className="container-fluid py-5">
         
                 {/* <!-- Tiutlo de Tipos de editores --> */}
-                <Container fluid>
+                <div className="container-fluid">
                     <h2 className="w-100 text-center py-5">
                         Tipos de Editores
                     </h2>
-                </Container>
+                </div>
         
                 {/* <!-- Contenedor de tipos de editores --> */}
-                <Container className="row m-0" fluid>
-                    <Button className="col" variant="light" href="#">
-                        <h3 className="d-flex text-dark">
+                <div className="row g-3 m-0 mx-5">
+                    <Link to="#" className="btn btn-light col">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                             <FontAwesomeIcon className="me-2" icon={faKitchenSet} />
                             <span>Cocina</span>
                         </h3>
-                    </Button>
+                    </Link>
         
-                    <Button className="col" variant="light" href="#">
-                        <h3 className="d-flex text-dark">
+                    <Link className="btn btn-light col" variant="light" href="#">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                             <FontAwesomeIcon className="me-2" icon={faPaintbrush} />
                             <span>Arte</span>
                         </h3>
-                    </Button>
+                    </Link>
     
-                    <Button className="col" variant="light" href="">
-                        <h3 className="d-flex text-dark">
+                    <Link className="btn btn-light col" variant="light" href="">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                             <FontAwesomeIcon className="me-2" icon={faChild} />
                             Infantil
                         </h3>
-                        </Button>
+                        </Link>
     
-                    <Button className="col" variant="light" href="">
-                        <h3 className="d-flex text-dark">
+                    <Link className="btn btn-light col" variant="light" href="">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                         <FontAwesomeIcon className="me-2" icon={faMasksTheater} />
                             Escenario
                         </h3>
-                    </Button>
+                    </Link>
     
-                    <Button className="col" variant="light" href="">
-                        <h3 className="d-flex text-dark">
+                    <Link className="btn btn-light col" variant="light" href="">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                             <FontAwesomeIcon className="me-2" icon={faGamepad} />
                             Videojuegos
                         </h3>
-                    </Button>
+                    </Link>
     
-                    <Button className="col" variant="light" href="">
-                        <h3 className="d-flex text-dark">
+                    <Link className="btn btn-light col" variant="light" href="">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                             <FontAwesomeIcon className="me-2" icon={faMobileScreen} />
                             Shorts
                         </h3>
-                    </Button>
+                    </Link>
     
-                    <Button className="col" variant="light" href="">
-                        <h3 className="d-flex text-dark">
+                    <Link className="btn btn-light col" variant="light" href="">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                             <FontAwesomeIcon className="me-2" icon={faMountain} />
                             Viajes
                         </h3>
-                    </Button>
+                    </Link>
     
-                    <Button className="col" variant="light" href="">
-                        <h3 className="d-flex text-dark">
+                    <Link className="btn btn-light col" variant="light" href="">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                             <FontAwesomeIcon className="me-2" icon={faCamera} />
                             Tráilers
                         </h3>
-                    </Button>
+                    </Link>
     
-                    <Button className="col" variant="light" href="">
-                        <h3 className="d-flex text-dark">
+                    <Link className="btn btn-light col" variant="light" href="">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                             <FontAwesomeIcon className="me-2" icon={faMusic} />
                             Musicales
                         </h3>
-                    </Button>
+                    </Link>
     
-                    <Button className="col" variant="light" href="">
-                        <h3 className="d-flex text-dark">
+                    <Link className="btn btn-light col" variant="light" href="">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                             <FontAwesomeIcon className="me-2" icon={faFaceGrinSquintTears} />
                             Recopilaciones
                         </h3>
-                    </Button>
+                    </Link>
     
-                    <Button className="col" variant="light" href="">
-                        <h3 className="d-flex text-dark">
+                    <Link className="btn btn-light col" variant="light" href="">
+                        <h3 className="d-flex text-dark m-0 p-0 justify-content-center align-items-center">
                             <FontAwesomeIcon className="me-2" icon={faRocket} />
                             Montajes
                         </h3>
-                    </Button>
-                </Container>
-            </Container>
+                    </Link>
+                </div>
+            </div>
         
             <Footer></Footer>
-        </Container>
+        </div>
     )
 };
 

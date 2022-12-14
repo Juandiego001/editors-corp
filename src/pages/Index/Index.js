@@ -1,72 +1,73 @@
-import React from 'react';
+import { React, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import PropTypes from 'prop-types';
 import styles from './Index.module.css';
+import { useNavigate } from 'react-router-dom';
+
+// Custom components
 import Menu from '../../components/Menu/Menu';
 import Footer from '../../components/Footer/Footer';
 
 // FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-
-// React-Bootstrap
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
 const Index = (props) => {
+    const navigate = useNavigate();
     const [cookies, setCookies] = useCookies();
+    
+    useEffect(() => {
+        if ((Object.keys(cookies)).length == 0) navigate("/login");
+    }, []);
 
     return (
-        <Container className="p-0" fluid>
+        <div className="container-fluid p-0">
             {/* Menú de la página */}
             <Menu></Menu>
         
             {/* <!-- Lugar donde se publicarán noticias o videos que algunos editores estén dispuestos a publicar --> */}
-            <Container fluid>
+            <div className="container-fluid">
         
                 {/* <!-- Ejemplo #1 de publicacion --> */}
-                <Container className="mt-5">
+                <div className="container-fluid mt-5">
 
-                    <Container fluid>
-                        <Button variant="light">
+                    <div className="container-fluid">
+                        <button className="btn text-dark">
                             Admin
-                        </Button>
-                    </Container>
+                        </button>
+                    </div>
 
                     {/* Publicación en cuestión (img, video, etc) */}
-                    <Container className="m-0" fluid>
-                        <img className="w-100" src="./imgs/example.jpg" alt="Imagen de ejemplo publicación"/>
-                    </Container>
+                    <div className="container-fluid m-0">
+                        <img className="w-100" src="./imgs/example.jpg" alt="Imagen de ejemplo publicación" />
+                    </div>
         
-                    <Container className="row mt-4" fluid>
-                        <Container className="col text-center" fluid>
-                            <Button className="w-75" variant="primary">
+                    <div className="container-fluid row mt-4">
+                        <div className="container-fluid col text-center">
+                            <button className="btn btn-primary w-75">
                                 Me gusta
-                            </Button>
-                        </Container>
+                            </button>
+                        </div>
 
-                        <Container className="col text-center" fluid>
-                            <Button className="w-75" variant="success">
+                        <div className="container-fluid col text-center">
+                            <button className="btn btn-success w-75">
                                 Comentar
-                            </Button>
-                        </Container>
+                            </button>
+                        </div>
                         
-                        <Container className="col text-center" fluid>
-                            <Button className="w-75" variant="light">
+                        <div className="container-fluid col text-center">
+                            <button className="btn btn-light w-75" variant="light">
                                 Descripción
-                            </Button>
-                        </Container>
-                    </Container>
+                            </button>
+                        </div>
+                    </div>
 
-                </Container>
+                </div>
         
-            </Container>
+            </div>
 
             {/* Footer de la página */}
             <Footer></Footer>
-        </Container>
+        </div>
     )
 };
 

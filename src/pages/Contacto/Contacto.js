@@ -1,14 +1,10 @@
-import React from 'react';
+import { React, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './Contacto.module.css';
+
+// Custom components
 import Menu from '../../components/Menu/Menu';
 import Footer from '../../components/Footer/Footer';
-
-// React-bootstrap
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
 
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,75 +20,80 @@ import FaTwitter from '../../components/Icons/FaTwitter/FaTwitter';
 
 const Contacto = () => {
 
+  useEffect(() => {
+    document.title = "Contacto | Editor's Corp";
+    window.scrollTo(0,0);
+  }, []);
+
   return (
-    <Container className="p-0" fluid>
+    <div className="container- p-0">
       <Menu ></Menu>
 
-      <Container className="p-0 card shadow-lg mt-5 px-5 py-5">
-          <h2 className="text-center" fluid>
+      <div className="p-0 card shadow-lg mt-5 px-5 py-5 mx-5">
+          <h2 className="text-center m-0 p-0">
               Contacto
           </h2>
 
-          <Container>
-            <Row className="justify-content-center">
-                <Container className="p-0" fluid>
-                    <h5 className="d-flex align-items-center m-0" fluid>
+          <div>
+            <div className="row justify-content-center">
+                <div className="p-0">
+                    <h5 className="d-flex align-items-center m-0">
                       <FontAwesomeIcon  className="h1 m-0 p-0 me-2" icon={faEnvelope} />
                       <span className="p-0">
                           Editorscorp.col@gmail.com
                       </span>
                     </h5>
-                </Container>
+                </div>
 
-                <Container className="p-0 mt-3" fluid>
-                    <h5 className="d-flex align-items-center m-0" fluid>
+                <div className="p-0 mt-3">
+                    <h5 className="d-flex align-items-center m-0" >
                       <FontAwesomeIcon  className="h1 m-0 p-0 me-2" icon={faPhone} />
                       <span className="p-0">
                           +57 3167461609
                       </span>
                     </h5>
-                  </Container>
+                  </div>
               
-                  <Container className="p-0 mt-3" fluid>
-                    <h5 className="d-flex align-items-center m-0" fluid>
+                  <div className="p-0 mt-3">
+                    <h5 className="d-flex align-items-center m-0" >
                       <FaDiscord className="h1 m-0 p-0 me-2" />
                       <span className="p-0">
                           Discord: Editor's Corp
                       </span>
                     </h5>
-                  </Container>
+                  </div>
               
-                  <Container className="p-0 mt-3" fluid>
-                    <h5 className="d-flex align-items-center m-0" fluid>
+                  <div className="p-0 mt-3">
+                    <h5 className="d-flex align-items-center m-0" >
                       <FaTwitter className="h1 m-0 p-0 me-2" />
                       <span className="p-0">
                           Twitter: Editor's Corp
                       </span>
                     </h5>
-                  </Container>
+                  </div>
 
-                  <Container className="p-0 mt-3" fluid>
-                    <h5 className="d-flex align-items-center m-0" fluid>
+                  <div className="p-0 mt-3">
+                    <h5 className="d-flex align-items-center m-0" >
                       <FaFacebook className="h1 m-0 p-0 me-2" />
                       <span className="p-0">
                           Facebook: Editor's Corp
                       </span>
                     </h5>
-                  </Container>
+                  </div>
 
-                  <Container className="p-0 mt-3" fluid>
-                    <h5 className="d-flex align-items-center m-0" fluid>
+                  <div className="p-0 mt-3">
+                    <h5 className="d-flex align-items-center m-0">
                       <FaYoutube className="h1 m-0 p-0 me-2" />
                       <span className="p-0">
                           Youtube: Editor's Corp
                       </span>
                     </h5>
-                  </Container>
-            </Row>
-          </Container>
-      </Container>
+                  </div>
+            </div>
+          </div>
+      </div>
       <Footer></Footer>
-    </Container>
+    </div>
   )
 };
 

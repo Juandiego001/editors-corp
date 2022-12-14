@@ -1,11 +1,7 @@
 import React from 'react';
 import styles from './Menu.module.css';
 import PropTypes from 'prop-types';
-
-// Bootstrap
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import { Link } from 'react-router-dom';
 
 // Font-Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,20 +34,28 @@ const Menu = (props) => {
     };
 
     return (
-        <Navbar bg="primary" className="text-light" expand="lg">
-            <Container className="col">
-                <Navbar.Brand className="ms-2 text-light" href="/index">Editor's Corp</Navbar.Brand>
-                <Navbar.Toggle className="text-light" aria-controls="basic-navbar-nav" />
-            </Container>
+        <nav className="navbar navbar-expand-lg text-light bg-primary">
+            <div className="container-fluid col">
+                <Link to="/" className="navbar-brand ms-2 text-light">Editor's Corp</Link>
+                <button className="navbar-toggler text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <FontAwesomeIcon icon={faBars} />
+                </button>
+            </div>
 
-            <Navbar.Collapse className="col flex-row-reverse">
-                <Nav className="mx-2">
-                    <Nav.Link className="text-light btn btn-primary">Búsqueda de editores</Nav.Link>
-                    <Nav.Link href="/tipos-editores" className="text-light btn btn-primary">Tipos de editores</Nav.Link>
-                    <Nav.Link href="/mi-perfil/1" className="text-light btn btn-primary">Mi perfil</Nav.Link>
-                </Nav>
-            </Navbar.Collapse>
-        </Navbar>
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul className="navbar-nav">
+                    <li className="nav-item">
+                        <Link className="btn btn-primary text-light ">Búsqueda de editores</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="/tipos-editores" className="btn btn-primary text-light ">Tipos de editores</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="/mi-perfil/1" className="btn btn-primary text-light ">Mi perfil</Link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     )};
 
 Menu.propTypes = {};

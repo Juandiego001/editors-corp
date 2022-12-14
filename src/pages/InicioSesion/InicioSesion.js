@@ -1,13 +1,9 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { React, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './InicioSesion.module.css';
+import { useNavigate, Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-// React-bootstrap
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
 
 // Services
 import UsuarioService from '../../services/Usuario.Service';
@@ -18,50 +14,24 @@ const InicioSesion = (props) => {
 
   const [nickname, setNickname] = useState('');
   const [contrasena, setContrasena] = useState('');
-
-  // Modals
-  /*
-    1. Inicio de sesión exitoso
-    2. Usuario o contraseña incorrectos
-    3. Ocurrió un error en el servidor
-    4. Por favor digite un usuario y una contrasena
-  */ 
-  const [incorrectos, setIncorrectos] = useState(false);
-  const [error, setError] = useState(false);
-  const [exitoso, setExitoso] = useState(false);
-  const [digite, setDigite] = useState(false);
+  const [theModal, setTheModal] = useState(0);
 
   // Funciones Handle
-  function handlenickname(event){
+  function handlenickname(event) {
     setNickname(event.target.value);
   }
 
-  function handleContrasena(event){
+  function handleContrasena(event) {
     setContrasena(event.target.value);
   }
-
-  function handleModals(id) {
-    // Se crea un diccionario con todos los modals
-    let modals = {
-      1: [exitoso, setExitoso],
-      2: [incorrectos, setIncorrectos],
-      3: [error, setError],
-      4: [digite, setDigite]
-    };
-
-    let func = modals[id][1];
-    let valor = !(modals[id][0]);
-
-    func(valor);
-  }  
 
   /*
     Función para iniciar sesión
   */
-  function iniciarSesion(e){
+  function iniciarSesion(e) {
     // Primero se verifica que todos los campos estén completos
     if (nickname === '' || contrasena === '') {
-      handleModals(4);
+      setTheModal(3);
     } else {
       // Se intenta iniciar sesión con el nickname y la contraseña digitados
       UsuarioService.login(nickname, contrasena)
@@ -69,29 +39,38 @@ const InicioSesion = (props) => {
           // res.data será true o false
           console.log(res.data);
           if (res.data) {
-            // Se logró iniciar sesión. Se setean las cookies
-            // y se envía al inicio
-            handleModals(1);
-
             setCookies('nick', nickname, {
               path: '/'
             });
 
             navigate('/index');
           } else {
-            handleModals(2);
+            setTheModal(3);
           }
-        })        
-  
+        })
+
         // Ocurrió un error al intentar iniciar sesión
         .catch(err => {
-          handleModals(3);
+          setTheModal(2);
           console.log(err);
         });
     }
 
     e.preventDefault();
   }
+
+  // Para volver a poner el modal en 0 de tal manera que no se muestre en la página
+  function resetModal(e) {
+    setTheModal(0);
+    e.preventDefault();
+  }
+
+  useEffect(() => {
+    document.title = "Iniciar sesión | Editor's Corp";
+
+    // Para ubicar en la parte superior siempre
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="w-100 vh-100">
@@ -100,33 +79,70 @@ const InicioSesion = (props) => {
       </div>
 
       {/* Formulario para iniciar sesión */}
-      <Form className="w-75 mx-auto h-75">
-        <Form.Group>
-          <Form.Label>Nickname</Form.Label>
-          <Form.Control name="nickname" id="nickname" type="text" placeholder="Ingresa tu nickname"  onChange={handlenickname} />
-        </Form.Group>
+      <form className="w-75 mx-auto h-75">
+        <div className="form-group mb-3">
+          <label className="form-label">Nickname</label>
+          <input className="form-control" name="nickname" id="nickname" type="text" placeholder="Ingresa tu nickname" onChange={handlenickname} />
+        </div>
 
-        
-        <Form.Group>
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control name="pasword" id="password" type="password"  placeholder="******" onChange={handleContrasena} />
-        </Form.Group>
+        <div className="form-group">
+          <label className="form-label">Contraseña</label>
+          <input className="form-control" name="pasword" id="password" type="password" placeholder="******" onChange={handleContrasena} />
+        </div>
 
-        <Container className="mt-5 row">
-          <Container className="col text-center">
-            <Button className="w-75" onClick={iniciarSesion}>
+        <div className="mt-5 row">
+          <div className="col text-center">
+            <button className="btn btn-primary w-75" onClick={iniciarSesion}>
               Iniciar sesión
-            </Button>
-          </Container>
+            </button>
+          </div>
 
-          <Container className="col text-center">
-            <Button variant="light" className="w-75">
+          <div className="col text-center">
+            <Link className="btn btn-light w-75 " to="/singup">
               Registrarse
-            </Button>
-          </Container>
+            </Link>
+          </div>
 
-        </Container>
-      </Form>
+        </div>
+      </form>
+
+      {/* Para los modals */}
+      {/* Modals
+        1. Usuario o contraseña incorrectos
+        2. Ocurrió un error en el servidor
+        3. Por favor digite un usuario y una contrasena
+      */}
+      <div className={"m-0 p-0 w-100 justify-content-center " + styles.ModalDigitar + " " + (theModal != 0 ? "d-flex" : "d-none")}>
+        <div className="m-0 p-0 bg-light shadow-lg">
+          <div className="m-0 p-0 row g-0 p-3 text-dark border-secondary border-bottom">
+            <div className="m-0 p-0 col-10">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">Error</h1>
+            </div>
+            <div className="m-0 p-0 col-2 text-end">
+              <button type="button" className="btn-close" onClick={resetModal}></button>
+            </div>
+          </div>
+
+          <p className="p-3 m-0">
+            {
+              theModal == 1 ?
+                "Usuario o contraseña incorrectos."
+                :
+                theModal == 2 ?
+                  "Ocurrió un error en el servidor."
+                  :
+                  theModal == 3 ?
+                    "Por favor digite un usuario y una contraseña."
+                  :
+                    ""
+            }
+          </p>
+
+          <div className="p-3 text-end">
+            <button type="button" className="btn btn-secondary" onClick={resetModal}>Aceptar</button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 };

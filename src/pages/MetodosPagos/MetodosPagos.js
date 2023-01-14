@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import styles from './MetodosPagos.module.css';
 import TratoService from '../../services/Trato.Service';
 
 const MetodosPagos = () => {
-
-  const history = useHistory();
   const location = useLocation();
 
   function crearTrato(){
@@ -22,7 +19,6 @@ const MetodosPagos = () => {
     intentoTrato
         .then(data => {
           alert('Se creó el trato con éxito!');
-          history.push('/');
           console.log(data);
         })
         .catch(err => {

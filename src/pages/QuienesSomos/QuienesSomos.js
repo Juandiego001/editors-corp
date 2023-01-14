@@ -1,42 +1,38 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { React, useEffect } from 'react';
 import styles from './QuienesSomos.module.css';
+import PropTypes from 'prop-types';
+
+// Custom components
 import Menu from '../../components/Menu/Menu';
-import MenuNav from '../../components/MenuNav/MenuNav';
 import Footer from '../../components/Footer/Footer';
 
 const QuienesSomos = () => {
 
-  const location = useLocation();
+  useEffect(() => {
+    document.title = "¿Quiénes somos? | Editor's Corp";
+
+    window.scrollTo(0,0);
+  }, []);
 
   return (
-  <>
-    <Menu nick={location.state.nick}></Menu>
-    <MenuNav nick={location.state.nick}></MenuNav>
-    <div className={styles.divMyv}>
-        <h2><strong>¿Quiénes Somos?</strong></h2>
+    <div className="container-fluid p-0">
+      <Menu></Menu>
 
-        <p>
-            Somos un grupo de ingenieros que estamos emprendiendo con una aplicativo software que ayude especificamente a la comunidad de las redes sociales. 
-            Esta iniciativa nació por parte de un integrante del grupo debido a que el se dedicaba tanto a edicion de video (Freelancer) como creación de contenido. Se busca ayudar que todas las personas tengan la posibildad de encontrar a un individuo que haga parte del proceso que requiera el usuario <strong>("YouTuber")</strong>. 
-            Esta pagina es totalmente usable y es intuitiva tambien se tiene un diseño minimalista en busca una mayor comodidad y comprensión para el usuario. Se realizó este proyecto con bastante empeño para que sea una pagina reconocida a futuro. 
-            <br/>
-            <br/>
-            Los desarrolladores que han trabajado y continuan para el mejoramiento de la pagina son los siguientes individuos:
-            <ul className={styles.lista}>
-                <br/>
-                <strong>
-                  <li>Santiago Castaño Henao<a href=""><img className={styles.insta} src="./imgs/Insta.png" alt="Imagen de insta"/></a></li>
-                  <li>Juena Diego Cobo<a href=""><img className={styles.insta} src="./imgs/Insta.png" alt="Imagen de insta"/></a></li>
-                  <li>Ivan Melo<a href=""><img className={styles.insta} src="./imgs/Insta.png" alt="Imagen de insta"/></a></li>
-                  <li>José Manuel Galvis<a href=""><img className={styles.insta} src="./imgs/Insta.png" alt="Imagen de insta"/></a></li>
-                </strong>
-            </ul>
-        </p>
+      <div className="card shadow-lg mt-5 mx-5 py-5">
+          <h2 className="m-0 p-0 py-3 text-center">
+            ¿Quiénes Somos?
+          </h2>
+
+          <p className="mx-5 p-4">
+            El presente proyecto fue inicialmente desarrollado para el curso de Ambiente y Desarrollo Web
+            de la Universidad Autónoma de Occidente. Cuando se finalizó el curso, el desarrollador que 
+            decidió continuar con el proyecto, y quien redacta esta sección, es Juan Diego Cobo Cabal.
+            Actualmente, estudiante de Ingeniería Informática de 7to semestre de la universidad mencionada.
+          </p>
+      </div>
+      <Footer ></Footer>
     </div>
-    <Footer nick={location.state.nick}></Footer>
-  </>
-)};
+  )
+};
 
 export default QuienesSomos;

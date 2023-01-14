@@ -3,36 +3,35 @@ import axios from 'axios';
 class UsuarioService {
     // Para iniciar sesión
     // Se verifica que el nick exista
-    async verificarNick(nick){
+    async verificarNick(nick) {
         return await axios
-                .get('http://localhost:3000/usuario-verificar-nick', 
-                        { params: {
-                                nick: nick
-                            }
-                        }
-                    );
+            .get('http://localhost:3001/usuario-verificar-nick',
+                {
+                    params: {
+                        nick
+                    }
+                }
+            );
     }
 
     // Iniciar sesión
-    async logIn(nick, contrasena){
+    async login(nick, contrasena) {
         return await axios
-                        .get('http://localhost:3000/usuario',
-                            { params: {
-                                    nick: nick,
-                                    contrasena: contrasena
-                                }
-                            });
+            .get(`http://localhost:3001/usuario/${nick}`,
+                {
+                    params: {
+                        nick,
+                        contrasena
+                    }
+                });
     }
 
     // Registrarse
-    async singUp(datosJson){
-        console.log(datosJson);
+    async singUp(datosJson) {
         return await axios
-                        .post('http://localhost:3000/usuario', datosJson);
+            .post('http://localhost:3001/usuario', datosJson);
     }
 
 }
-
-    // Insertar
 
 export default new UsuarioService();

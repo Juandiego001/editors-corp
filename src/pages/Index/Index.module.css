@@ -1,3 +1,54 @@
-.fuenteCalibri{
-    font-family: 'Calibri';
+.ContenedorGeneral {
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.ContenedorSection {
+    width: 100%;
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.ContenedorPublicaciones {
+    width: 95%;
+    margin: auto;
+    text-align: left;
+    display: grid;
+    grid-template-rows: 5% 90% 5%;
+}
+
+.ContenedorNombre a {
+    color: black;
+    font-family: "system-ui";
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: white;
+}
+
+.ContenedorPublicacion {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ContenedorPublicacion img {
+    width: 100%;
+}
+
+.ContenedorReaccion {
+    display: grid;
+    grid-template-columns: 33% 34% 33%;    
+}
+
+.BotonLike, .BotonDescripcion, .BotonComentarios {
+    color: black;
+    background-color: white;
+    font-family: "system-ui";
+}
+
+.BotonLike:hover, .BotonDescripcion:hover, .BotonComentarios:hover {
+    cursor: pointer;
 }

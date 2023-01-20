@@ -1,37 +1,28 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import styles from './Menu.module.css';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 // Font-Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const Menu = (props) => {
-    let hacia = '';
+    const [nick, setNick] = useState("");
+    const [cookies, setCookies, removeCookie] = useCookies(["nick"]);
+    const navigate = useNavigate();
 
-    const navegarMenu = () => {    
-        
+    function logOut() {
+        removeCookie("nick");
+        navigate("/login");
     }
 
-    function comprobarInicio() {
-        
-        if (props.nick) {
-            return (
-                <>
-                    <a className="col w-100 h-100 py-2 btn btn-info m-0 text-light" href="#/">Hola, {props.nick}</a>
-                    <a className="col w-100 h-100 py-2 btn btn-info m-0 text-light" href="#/">Cerrar sesión</a>
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <a className="col w-100 h-100 py-2 btn btn-info m-0 text-light" href="#/">Iniciar sesión</a>
-                    <a className="col w-100 h-100 py-2 btn btn-info m-0 text-light" href="#/registrarse">Registrarse</a>
-                </>
-            );
+    useEffect(() => {
+        if (cookies.hasOwnProperty("nick")) {
+            setNick(cookies["nick"]);
         }
-    };
+    }, []);
 
     return (
         <nav className="navbar navbar-expand-lg text-light bg-primary">
@@ -50,13 +41,31 @@ const Menu = (props) => {
                     <li className="nav-item">
                         <Link to="/tipos-editores" className="btn btn-primary text-light ">Tipos de editores</Link>
                     </li>
-                    <li className="nav-item">
-                        <Link to="/mi-perfil/1" className="btn btn-primary text-light ">Mi perfil</Link>
-                    </li>
+                    {
+                        nick != "" ?
+                            (
+                                <>
+                                    <li className="nav-item">
+                                        <Link to={"/mi-perfil/" + nick} className="btn btn-primary text-light ">Mi perfil</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <button onClick={logOut} className="btn btn-primary text-light ">Cerrar sesión</button>
+                                    </li>
+                                </>
+                            )
+                            :
+                            (
+                                <>
+                                    <li className="nav-item"><Link className="btn btn-primary text-light ">Iniciar sesión</Link></li>
+                                    <li className="nav-item"><Link className="btn btn-primary text-light ">Registrarse</Link></li>
+                                </>
+                            )
+                    }
                 </ul>
             </div>
         </nav>
-    )};
+    )
+};
 
 Menu.propTypes = {};
 

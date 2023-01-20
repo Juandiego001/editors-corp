@@ -5,3 +5,9 @@
 .InvalidField {
     border: 1px solid red;
 }
+
+.Prueba {
+    left: unset;
+    right: 0;
+    position: sticky;
+}

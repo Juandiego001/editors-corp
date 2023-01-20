@@ -43,7 +43,7 @@ const InicioSesion = (props) => {
               path: '/'
             });
 
-            navigate('/index');
+            navigate('/');
           } else {
             setTheModal(3);
           }

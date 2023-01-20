@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Index from './pages/Index/Index';
 import InicioSesion from './pages/InicioSesion/InicioSesion';
 import Registrarse from './pages/Registrarse/Registrarse';
-import PerfilEditor from './pages/PerfilEditor/PerfilEditor';
+import Perfil from './pages/Perfil/Perfil';
 import TiposEditores from './pages/TiposEditores/TiposEditores';
 import MisionVision from './pages/MisionVision/MisionVision';
 import Terminos from './pages/Terminos/Terminos';
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/mi-perfil/:miperfil",
-    element: <PerfilEditor />
+    element: <Perfil />
   },
   {
     path: "/registrarse",

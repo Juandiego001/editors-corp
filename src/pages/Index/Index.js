@@ -16,7 +16,8 @@ const Index = (props) => {
     const [cookies, setCookies] = useCookies();
     
     useEffect(() => {
-        if ((Object.keys(cookies)).length == 0) navigate("/login");
+        console.log(cookies);
+        if (!Object.keys(cookies).includes("nick")) navigate("/login");
     }, []);
 
     return (

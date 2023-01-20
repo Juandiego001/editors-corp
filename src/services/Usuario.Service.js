@@ -17,7 +17,7 @@ class UsuarioService {
     // Iniciar sesión
     async login(nick, contrasena) {
         return await axios
-            .get(`http://localhost:3001/usuario/${nick}`,
+            .get(`http://localhost:3001/usuario/?nick=${nick}`,
                 {
                     params: {
                         nick,
@@ -30,6 +30,12 @@ class UsuarioService {
     async singUp(datosJson) {
         return await axios
             .post('http://localhost:3001/usuario', datosJson);
+    }
+
+    // Obtener datos importantes después de iniciar sesión
+    async getData(nick) {
+        return await axios
+            .get(`http://localhost:3001/usuario/datos/?nick=${nick}`)
     }
 
 }

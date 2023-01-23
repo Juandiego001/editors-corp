@@ -4,7 +4,7 @@ class UsuarioService {
     // Para iniciar sesión
     // Se verifica que el nick exista
     async verificarNick(nick) {
-        return await axios
+        let existeNick = await axios
             .get('http://localhost:3001/usuario-verificar-nick',
                 {
                     params: {
@@ -12,6 +12,8 @@ class UsuarioService {
                     }
                 }
             );
+
+        return existeNick;
     }
 
     // Iniciar sesión
@@ -27,15 +29,13 @@ class UsuarioService {
     }
 
     // Registrarse
-    async singUp(datosJson) {
-        return await axios
-            .post('http://localhost:3001/usuario', datosJson);
+    async singUp(datosJson) {        
+        return await axios.post('http://localhost:3001/usuario', datosJson);
     }
 
     // Obtener datos importantes después de iniciar sesión
     async getData(nick) {
-        return await axios
-            .get(`http://localhost:3001/usuario/datos/?nick=${nick}`)
+        return await axios.get(`http://localhost:3001/usuario/datos/?nick=${nick}`);
     }
 
 }

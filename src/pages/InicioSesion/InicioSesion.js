@@ -37,7 +37,7 @@ const InicioSesion = (props) => {
       UsuarioService.login(nickname, contrasena)
         .then(res => {
           // res.data será true o false
-          console.log(res.data);
+          console.log(res);
           if (res.data) {
             setCookies('nick', nickname, {
               path: '/'

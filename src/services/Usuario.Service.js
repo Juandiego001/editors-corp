@@ -19,12 +19,10 @@ class UsuarioService {
     // Iniciar sesión
     async login(nick, contrasena) {
         return await axios
-            .get(`http://localhost:3001/usuario/?nick=${nick}`,
-                {
-                    params: {
-                        nick,
-                        contrasena
-                    }
+            .post(`http://localhost:3001/usuario-login`, 
+                {   
+                    nick,
+                    contrasena
                 });
     }
 

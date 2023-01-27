@@ -1,7 +1,8 @@
 import { React, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './Registrarse.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,6 +11,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import UsuarioService from '../../services/Usuario.Service';
 
 const Registrarse = () => {
+
+  const navigate = useNavigate();
+  const [cookies, setCookies] = useCookies();
 
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
@@ -367,6 +371,14 @@ const Registrarse = () => {
           progress: undefined,
           theme: "colored",
         });
+
+        new Promise((resolve, reject) => setTimeout(resolve, 2000));
+
+        setCookies('nick', nick, {
+          path: '/'
+        });
+
+        navigate('/');
       })
       .catch(err => {
         toast.error('Ocurrió un error en el servidor. Lo solucionaremos lo más pronto posible.', {
@@ -380,7 +392,6 @@ const Registrarse = () => {
           theme: "colored",
         });
 
-        console.log("err");
         console.log(err);
       })
 

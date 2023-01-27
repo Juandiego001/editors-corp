@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, useParams } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 
 // Bootstrap
@@ -34,7 +34,10 @@ const router = createBrowserRouter([
   },
   {
     path: "/mi-perfil/:miperfil",
-    element: <Perfil />
+    element: <Perfil />,
+    // Se envía lo que está en los parámetros de búsqueda
+    // al buscar un perfil
+    loader: ({ params }) => {return params.miperfil;}
   },
   {
     path: "/registrarse",

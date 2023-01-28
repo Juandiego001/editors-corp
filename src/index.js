@@ -18,6 +18,7 @@ import Contacto from './pages/Contacto/Contacto';
 import QuienesSomos from './pages/QuienesSomos/QuienesSomos';
 import Trato from './pages/Trato/Trato';
 import MetodosPagos from './pages/MetodosPagos/MetodosPagos';
+import BusquedaEditores from './pages/BusquedaEditores/BusquedaEditores';
 
 const router = createBrowserRouter([ 
   {
@@ -33,11 +34,11 @@ const router = createBrowserRouter([
     element: <Registrarse />
   },
   {
-    path: "/mi-perfil/:miperfil",
+    path: "/perfil/:perfil",
     element: <Perfil />,
     // Se envía lo que está en los parámetros de búsqueda
     // al buscar un perfil
-    loader: ({ params }) => {return params.miperfil;}
+    loader: ({ params }) => {return params.perfil;}
   },
   {
     path: "/registrarse",
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
   {
     path: "/metodos-pagos",
     element: <MetodosPagos />
+  },
+  {
+    path: "/busqueda-editores",
+    element: <BusquedaEditores />
   }
 ]);
 

@@ -36,7 +36,7 @@ const Menu = (props) => {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <Link className="btn btn-primary text-light ">Búsqueda de editores</Link>
+                        <Link to="/busqueda-editores" className="btn btn-primary text-light ">Búsqueda de editores</Link>
                     </li>
                     <li className="nav-item">
                         <Link to="/tipos-editores" className="btn btn-primary text-light ">Tipos de editores</Link>
@@ -46,7 +46,7 @@ const Menu = (props) => {
                             (
                                 <>
                                     <li className="nav-item">
-                                        <Link to={"/mi-perfil/" + nick} className="btn btn-primary text-light ">Mi perfil</Link>
+                                        <Link to={"/perfil/" + nick} className="btn btn-primary text-light">Mi perfil</Link>
                                     </li>
                                     <li className="nav-item">
                                         <button onClick={logOut} className="btn btn-primary text-light ">Cerrar sesión</button>

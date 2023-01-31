@@ -73,38 +73,41 @@ const InicioSesion = (props) => {
   }, []);
 
   return (
-    <div className="w-100 vh-100">
-      <div className="h-25 w-100 m-0">
-        <h1 className="bg-primary text-light d-flex justify-content-center align-items-center text-center py-3">Editor's Corp</h1>
+    <div className="vh-100 row g-0 m-0 p-0">
+      <div className="col-6 border-end border-primary m-0 p-0 d-flex justify-content-center align-items-center">
+        <h1 className="text-primary text-center display-1 px-2">Editor's Corp</h1>
       </div>
 
       {/* Formulario para iniciar sesión */}
-      <form className="w-75 mx-auto h-75">
-        <div className="form-group mb-3">
-          <label className="form-label">Nickname</label>
-          <input className="form-control" name="nickname" id="nickname" type="text" placeholder="Ingresa tu nickname" onChange={handlenickname} />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">Contraseña</label>
-          <input className="form-control" name="pasword" id="password" type="password" placeholder="******" onChange={handleContrasena} />
-        </div>
-
-        <div className="mt-5 row">
-          <div className="col text-center">
-            <button className="btn btn-primary w-75" onClick={iniciarSesion}>
-              Iniciar sesión
-            </button>
+      <div className="col-6 m-0 p-0 d-flex justify-content-center align-items-center">
+        <form className="w-75">
+          <div className="form-group mb-3">
+            <label className="form-label">Nickname</label>
+            <input className="form-control" name="nickname" id="nickname" type="text" placeholder="Ingresa tu nickname" onChange={handlenickname} />
           </div>
 
-          <div className="col text-center">
-            <Link className="btn btn-light w-75 " to="/singup">
-              Registrarse
-            </Link>
+          <div className="form-group">
+            <label className="form-label">Contraseña</label>
+            <input className="form-control" name="pasword" id="password" type="password" placeholder="******" onChange={handleContrasena} />
           </div>
 
-        </div>
-      </form>
+          <div className="mt-5 row">
+            <div className="col text-center">
+              <button className="btn btn-primary w-75" onClick={iniciarSesion}>
+                Iniciar sesión
+              </button>
+            </div>
+
+            <div className="col text-center">
+              <Link className="btn btn-light px-5" to="/singup">
+                Registrarse
+              </Link>
+            </div>
+
+          </div>
+        </form>
+
+      </div>
 
       {/* Para los modals */}
       {/* Modals
@@ -133,7 +136,7 @@ const InicioSesion = (props) => {
                   :
                   theModal == 3 ?
                     "Por favor digite un usuario y una contraseña."
-                  :
+                    :
                     ""
             }
           </p>

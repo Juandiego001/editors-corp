@@ -38,6 +38,13 @@ class UsuarioService {
         return searchUser.data;
     }
 
+    // Buscar editores
+    async searchEditors(nick) {
+        let searchEditors = await axios.get(`http://localhost:3001/usuario/busqueda/?nick=${nick}`);
+
+        return searchEditors.data;
+    }
+
 }
 
 export default new UsuarioService();

@@ -16,6 +16,7 @@ import UsuarioService from '../../services/Usuario.Service';
 const BusquedaEditores = () => {
 
   const [nickSearched, setNickSearched] = useState("");
+  const [editorsFind, setEditorsFind] = useState([]);
 
   function handleNickSearched(e) {
     setNickSearched(e.target.value);
@@ -34,11 +35,25 @@ const BusquedaEditores = () => {
         theme: "colored",
       });
     } else {
-      UsuarioService.getData(nickSearched)
+      UsuarioService.searchEditors(nickSearched)
         .then(res => {
+          if (res["code"] == 200) {
+            toast.success('¡Se han encontrado editores con el nickname!', {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
 
-          console.log("res");
-          console.log(res);
+            setEditorsFind(res["data"]);
+          } else {
+
+          }
+
         })
         .catch(err => {
           console.log("err");
@@ -56,15 +71,15 @@ const BusquedaEditores = () => {
       <div>
         <Menu />
 
-        <div>
-          <div className="d-flex justify-content-center align-items-center bg-light py-5">
-            <input className="form-control w-75" type="text" name="nickSearched" id="nickSearched" onChange={handleNickSearched} placeholder="Ingresa el nickname" />
-            <button className="btn btn-primary d-inline" onClick={searchEditor}>Buscar</button>
+        <div className="vh-100 position-relative">
+          <div className={"mx-auto " + styles.ContainerSearchEditors}>
+            <h1 className="display-1 text-center mb-3">Búsqueda de editores</h1>
+            <div className="d-flex justify-content-center">
+              <input className="form-control w-75" type="text" name="nickSearched" id="nickSearched" onChange={handleNickSearched} placeholder="Ingresa el nickname" />
+              <button className="btn btn-primary d-inline ms-2" onClick={searchEditor}>Buscar</button>
+            </div>
           </div>
 
-          <div>
-
-          </div>
         </div>
 
         <Footer />

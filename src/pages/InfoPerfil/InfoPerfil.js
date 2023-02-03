@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './InfoPerfil.module.css';
 
-const InfoPerfil = () => (
-  <div className={styles.InfoPerfil}>
-    InfoPerfil Component
-  </div>
-);
+const InfoPerfil = () => {
+  return (
+    <div className={styles.InfoPerfil}>
+      InfoPerfil Component
+    </div>
+  )
+};
 
 InfoPerfil.propTypes = {};
 

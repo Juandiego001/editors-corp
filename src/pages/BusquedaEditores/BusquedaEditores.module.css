@@ -1,8 +1,36 @@
-.BusquedaEditores {}
-
 .ContainerSearchEditors {
     position: absolute;
     top: 15%;
-    left: 25%;
-    right: 25%;
+    transition: top 1s;
+}
+
+.GoUp {
+    top: 5%;
+}
+
+.BgPrimary {
+    background-color: #0d6efd;
+}
+
+.BgSuccess {
+    background-color: #198754;
+}
+
+.BgCyan900 {
+    background-color: #087990;
+}
+
+.BgPrimary:hover {
+    cursor: pointer;
+    background-color: #0a58ca;
+}
+
+.BgSuccess:hover {
+    cursor: pointer;
+    background-color: #146c43;
+}
+
+.BgCyan900:hover {
+    cursor: pointer;
+    background-color: #055160;
 }

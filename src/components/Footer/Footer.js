@@ -26,7 +26,7 @@ const Footer = (props) => {
                         <nav className="navbar justify-content-center text-center">
                             <ul className="navbar-nav flex-column">
                                 <li className="nav-item">
-                                    <Link className="nav-link text-dark">
+                                    <Link to="/busqueda-editores" className="nav-link text-dark">
                                         Búsqueda de editores
                                     </Link>
                                 </li>

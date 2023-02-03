@@ -19,13 +19,18 @@ const Menu = (props) => {
     }
 
     useEffect(() => {
+        // En caso de que no exista el nick,
+        // debe redirigrse a logearse.
         if (cookies.hasOwnProperty("nick")) {
             setNick(cookies["nick"]);
+        } else {
+            // Se regresa 
+            navigate("/login");
         }
     }, []);
 
     return (
-        <nav className="navbar navbar-expand-lg text-light bg-primary">
+        <nav className="navbar navbar-expand-lg text-light bg-primary m-0 p-0 py-2">
             <div className="container-fluid col">
                 <Link to="/" className="navbar-brand ms-2 text-light">Editor's Corp</Link>
                 <button className="navbar-toggler text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,30 +39,30 @@ const Menu = (props) => {
             </div>
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav">
+                <ul className="w-100 navbar-nav">
                     <li className="nav-item">
-                        <Link to="/busqueda-editores" className="btn btn-primary text-light ">Búsqueda de editores</Link>
+                        <Link to="/busqueda-editores" className="ps-4 btn btn-primary text-light w-100 text-start">Búsqueda de editores</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/tipos-editores" className="btn btn-primary text-light ">Tipos de editores</Link>
+                        <Link to="/tipos-editores" className="ps-4 btn btn-primary text-light w-100 text-start">Tipos de editores</Link>
                     </li>
                     {
                         nick != "" ?
                             (
                                 <>
                                     <li className="nav-item">
-                                        <Link to={"/perfil/" + nick} className="btn btn-primary text-light">Mi perfil</Link>
+                                        <Link to={"/perfil/" + nick} className="ps-4 btn btn-primary text-light w-100 text-start">Mi perfil</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <button onClick={logOut} className="btn btn-primary text-light ">Cerrar sesión</button>
+                                        <button onClick={logOut} className="ps-4 btn btn-primary text-light w-100 text-start">Cerrar sesión</button>
                                     </li>
                                 </>
                             )
                             :
                             (
                                 <>
-                                    <li className="nav-item"><Link className="btn btn-primary text-light ">Iniciar sesión</Link></li>
-                                    <li className="nav-item"><Link className="btn btn-primary text-light ">Registrarse</Link></li>
+                                    <li className="nav-item"><Link className="ps-4 btn btn-primary text-light w-100 text-start">Iniciar sesión</Link></li>
+                                    <li className="nav-item"><Link className="ps-4 btn btn-primary text-light w-100 text-start">Registrarse</Link></li>
                                 </>
                             )
                     }

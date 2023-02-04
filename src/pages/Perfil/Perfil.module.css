@@ -1,1 +1,3 @@
-.PerfilEditor {}
+.HoverCursorPointer:hover {
+    cursor: pointer;
+}

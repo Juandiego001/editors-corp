@@ -41,28 +41,28 @@ const Menu = (props) => {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="w-100 navbar-nav">
                     <li className="nav-item">
-                        <Link to="/busqueda-editores" className="ps-4 btn btn-primary text-light w-100 text-start">Búsqueda de editores</Link>
+                        <Link to="/busqueda-editores" className="btn btn-primary text-light w-100 text-start">Búsqueda de editores</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/tipos-editores" className="ps-4 btn btn-primary text-light w-100 text-start">Tipos de editores</Link>
+                        <Link to="/tipos-editores" className="btn btn-primary text-light w-100 text-start">Tipos de editores</Link>
                     </li>
                     {
                         nick != "" ?
                             (
                                 <>
                                     <li className="nav-item">
-                                        <Link to={"/perfil/" + nick} className="ps-4 btn btn-primary text-light w-100 text-start">Mi perfil</Link>
+                                        <Link to={"/perfil/" + nick} className="btn btn-primary text-light w-100 text-start">Mi perfil</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <button onClick={logOut} className="ps-4 btn btn-primary text-light w-100 text-start">Cerrar sesión</button>
+                                        <button onClick={logOut} className="btn btn-primary text-light w-100 text-start">Cerrar sesión</button>
                                     </li>
                                 </>
                             )
                             :
                             (
                                 <>
-                                    <li className="nav-item"><Link className="ps-4 btn btn-primary text-light w-100 text-start">Iniciar sesión</Link></li>
-                                    <li className="nav-item"><Link className="ps-4 btn btn-primary text-light w-100 text-start">Registrarse</Link></li>
+                                    <li className="nav-item"><Link className="btn btn-primary text-light w-100 text-start">Iniciar sesión</Link></li>
+                                    <li className="nav-item"><Link className="btn btn-primary text-light w-100 text-start">Registrarse</Link></li>
                                 </>
                             )
                     }

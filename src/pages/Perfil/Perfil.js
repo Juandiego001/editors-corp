@@ -19,8 +19,12 @@ import TratoService from '../../services/Trato.Service';
 
 // Font-Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faMessage } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faScrewdriver } from '@fortawesome/free-solid-svg-icons';
 
 // Videos
 
@@ -93,7 +97,7 @@ const Perfil = () => {
                 <title>{name} | Perfil | Editor's Corp</title>
             </Helmet>
 
-            <div className="container-fluid p-0 bg-light">
+            <div className="container-fluid m-0 p-0 bg-light">
                 <Menu></Menu>
 
                 {
@@ -110,38 +114,12 @@ const Perfil = () => {
                             </div>
 
                             {/* <!-- Agregar amigo - Nombre editor - Contactar - Mostrarse con apodo --> */}
-                            <div className="row justify-content-md-center w-100 my-3">
-                                <div className="col text-center p-0">
-                                    <button className="btn btn-success w-75">
-                                        <i className="fa fa-user-plus me-2"></i>
-                                        Agregar amigo
-                                    </button>
-                                </div>
-                                <div className="col text-center p-0">
-                                    <button className="btn btn-primary w-75" >
-                                        <i className="fa fa-envelope-square"></i>
-                                        Contactar
-                                    </button>
-                                </div>
-                                <div className="col text-center p-0">
-                                    <button className="btn btn-light w-75">
-                                        Mostrarse con apodo
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* <!-- Opciones: 'Opiniones' y 'Proyectos personales' --> */}
-                            <div className="row w-100 m-0 px-2">
-                                <div className="col p-0 text-center">
-                                    <button className="btn btn-outline-success w-100" onClick={handleMostrarOpiniones}>
-                                        Opiniones
-                                    </button>
-                                </div>
-                                <div className="col p-0 text-center">
-                                    <button className="btn btn-outline-primary w-100" onClick={handleMostrarProyectos}>
-                                        Proyectos personales
-                                    </button>
-                                </div>
+                            <div className="my-4 d-flex justify-content-md-center align-items-center">
+                                <FontAwesomeIcon className={"h1 ps-3 text-dark " + styles.HoverCursorPointer} icon={faUserPlus} />
+                                <FontAwesomeIcon className={"h1 ps-3 text-primary " + styles.HoverCursorPointer} icon={faMessage} />
+                                <FontAwesomeIcon className={"h1 ps-3 text-warning " + styles.HoverCursorPointer} icon={faStar} onClick={handleMostrarOpiniones} />
+                                <FontAwesomeIcon className={"h1 ps-3 text-primary " + styles.HoverCursorPointer} icon={faBriefcase} onClick={handleMostrarProyectos} />
+                                <FontAwesomeIcon className={"h1 ps-3 text-dark " + styles.HoverCursorPointer} icon={faScrewdriver} />
                             </div>
 
                             {/* <!-- Alert Opiniones --> */}

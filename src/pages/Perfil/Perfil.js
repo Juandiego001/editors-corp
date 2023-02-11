@@ -43,6 +43,40 @@ const Perfil = () => {
     // Para verificar que el usuario buscado existe
     const [userExists, setUserExists] = useState(true);
 
+    // Agregar amigo y enviar mensaje
+    const botonesSuperiores = [
+        {
+            "mensaje": "Agregar amigo",
+            "icono": faUserPlus,
+            "style": "h1 m-0 p-0 me-2 text-primary",
+        },
+        {
+            "mensaje": "Enviar mensaje",
+            "icono": faMessage,
+            "style": "h1 m-0 p-0 me-2 text-primary",
+        }
+    ];
+
+    const botonesInferiores = [
+        {
+            "mensaje": "Mostrar opiniones",
+            "icono": faStar,
+            "style": "h1 m-0 p-0 me-2 text-warning",
+            "onclick": handleMostrarOpiniones
+        },
+        {
+            "mensaje": "Mostrar proyectos",
+            "icono": faBriefcase,
+            "style": "h1 m-0 p-0 me-2 text-success",
+            "onclick": handleMostrarProyectos
+        },
+        {
+            "mensaje": "Ajustes",
+            "icono": faScrewdriver,
+            "style": "h1 m-0 p-0 me-2 text-dark",
+        }
+    ];
+
     function handleMostrarOpiniones() {
         setMostrarOpiniones(!mostrarOpiniones);
     }
@@ -114,12 +148,39 @@ const Perfil = () => {
                             </div>
 
                             {/* <!-- Agregar amigo - Nombre editor - Contactar - Mostrarse con apodo --> */}
-                            <div className="my-4 d-flex justify-content-md-center align-items-center">
-                                <FontAwesomeIcon className={"h1 ps-3 text-dark " + styles.HoverCursorPointer} icon={faUserPlus} />
-                                <FontAwesomeIcon className={"h1 ps-3 text-primary " + styles.HoverCursorPointer} icon={faMessage} />
-                                <FontAwesomeIcon className={"h1 ps-3 text-warning " + styles.HoverCursorPointer} icon={faStar} onClick={handleMostrarOpiniones} />
-                                <FontAwesomeIcon className={"h1 ps-3 text-primary " + styles.HoverCursorPointer} icon={faBriefcase} onClick={handleMostrarProyectos} />
-                                <FontAwesomeIcon className={"h1 ps-3 text-dark " + styles.HoverCursorPointer} icon={faScrewdriver} />
+                            <div className="my-4 row g-0">
+                                {
+                                    botonesSuperiores.map((i, e) => {
+                                        return (
+                                            <div className={"col-sm-6 m-0 p-0 my-2 " + styles.HoverCursorPointer}>
+                                                <div className="h-100 m-0 p-0">
+                                                    <div className="d-flex justify-content-center align-items-center m-0 p-0 text-center">
+                                                        <FontAwesomeIcon className={i["style"]} icon={i["icono"]} />
+                                                        {i["mensaje"]}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+
+                            <div className="my-4 row g-0">
+                                {
+                                    botonesInferiores.map((i, e) => {
+                                        return (
+                                            <div className={"col-sm-4 m-0 p-0 my-2 " + styles.HoverCursorPointer} onClick={i["onclick"]}>
+                                                <div className={"h-100 p-0 m-0"}>
+                                                    <div className="d-flex align-items-center justify-content-center m-0 p-0 text-center">
+                                                        <FontAwesomeIcon className={i["style"]} icon={i["icono"]} />
+                                                        <span className="d-flex ">{i["mensaje"]}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+
                             </div>
 
                             {/* <!-- Alert Opiniones --> */}

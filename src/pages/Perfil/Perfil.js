@@ -35,6 +35,7 @@ const Perfil = () => {
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [nick, setNick] = useState("");
+    const [sameNick, setSameNick] = useState(true);
     const [biography, setBiography] = useState("");
     const [cookies, setCookies] = useCookies(["nick"]);
     const [mostrarOpiniones, setMostrarOpiniones] = useState(false);
@@ -49,15 +50,32 @@ const Perfil = () => {
             "mensaje": "Agregar amigo",
             "icono": faUserPlus,
             "style": "h1 m-0 p-0 me-2 text-primary",
+            "justify": "justify-content-end"
         },
         {
             "mensaje": "Enviar mensaje",
             "icono": faMessage,
             "style": "h1 m-0 p-0 me-2 text-primary",
+            "justify": "justify-content-center"
         }
     ];
 
     const botonesInferiores = [
+        {
+            "mensaje": "Mostrar opiniones",
+            "icono": faStar,
+            "style": "h1 m-0 p-0 me-2 text-warning",
+            "onclick": handleMostrarOpiniones
+        },
+        {
+            "mensaje": "Mostrar proyectos",
+            "icono": faBriefcase,
+            "style": "h1 m-0 p-0 me-2 text-success",
+            "onclick": handleMostrarProyectos
+        }
+    ];
+
+    const botonesMismoPerfil = [
         {
             "mensaje": "Mostrar opiniones",
             "icono": faStar,
@@ -74,8 +92,9 @@ const Perfil = () => {
             "mensaje": "Ajustes",
             "icono": faScrewdriver,
             "style": "h1 m-0 p-0 me-2 text-dark",
+            "onclick": irAjustes
         }
-    ];
+    ]
 
     function handleMostrarOpiniones() {
         setMostrarOpiniones(!mostrarOpiniones);
@@ -85,9 +104,11 @@ const Perfil = () => {
         setMostrarProyectos(!mostrarProyectos);
     }
 
-    useEffect(() => {
-        let sameNick = true;
+    function irAjustes() {
+        navigate("/ajustes");
+    }
 
+    useEffect(() => {
         // Se compara el nick del usuario que ha iniciado
         // sesión con el nickd el usuario que se busca.
         // Si es el mismo, se trata de que está analizando
@@ -97,7 +118,7 @@ const Perfil = () => {
             let theNick = cookies["nick"];
 
             if (theNick != nickQuery) {
-                sameNick = false;
+                setSameNick(false);
             }
 
             setNick(sameNick ? theNick : nickQuery);
@@ -147,41 +168,67 @@ const Perfil = () => {
                                 </h2>
                             </div>
 
-                            {/* <!-- Agregar amigo - Nombre editor - Contactar - Mostrarse con apodo --> */}
-                            <div className="my-4 row g-0">
-                                {
-                                    botonesSuperiores.map((i, e) => {
-                                        return (
-                                            <div className={"col-sm-6 m-0 p-0 my-2 " + styles.HoverCursorPointer}>
-                                                <div className="h-100 m-0 p-0">
-                                                    <div className="d-flex justify-content-center align-items-center m-0 p-0 text-center">
-                                                        <FontAwesomeIcon className={i["style"]} icon={i["icono"]} />
-                                                        {i["mensaje"]}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
+                            {/* Si es el mismo nick, es porque el editor está visualizando */}
+                            {/* su propio perfil, por lo que se le deben permitir exclusivamente */}
+                            {/* los botones de ver opiniones, proyectos y ajustes. */}
+                            {
+                                sameNick ?
+                                    /* Botones: mostrar opiniones, mostrar proyectos y ajustes */
+                                    <div className="container-fluid m-0 p-0 d-flex justify-content-center align-items-center text-center">
+                                        <div className="row g-0 m-0 p-0 gx-5">
+                                            {
+                                                botonesMismoPerfil.map((i, e) => {
+                                                    return (
+                                                        <div key={"renderButtonsSameNick" + e} className={"col btn btn-light my-2 d-flex justify-content-center align-items-center " + styles.HoverCursorPointer} onClick={i["onclick"]}>
+                                                            <div className={"d-flex m-0 p-0 align-items-center justify-content-center"} >
+                                                                <FontAwesomeIcon className={i["style"]} icon={i["icono"]} />
+                                                                <span className="h5 m-0 p-0">{i["mensaje"]}</span>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
 
-                            <div className="my-4 row g-0">
-                                {
-                                    botonesInferiores.map((i, e) => {
-                                        return (
-                                            <div className={"col-sm-4 m-0 p-0 my-2 " + styles.HoverCursorPointer} onClick={i["onclick"]}>
-                                                <div className={"h-100 p-0 m-0"}>
-                                                    <div className="d-flex align-items-center justify-content-center m-0 p-0 text-center">
-                                                        <FontAwesomeIcon className={i["style"]} icon={i["icono"]} />
-                                                        <span className="d-flex ">{i["mensaje"]}</span>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                    </div>
+                                    :
+                                    <div className="m-0 p-0">
+                                        <div className="container-fluid m-0 p-0 d-flex justify-content-center align-items-center text-center my-4">
+                                            <div className="row m-0 p-0 gx-5">
+                                                {
+                                                    botonesSuperiores.map((i, e) => {
+                                                        return (
+                                                            <div key={"renderButtonsDiffNick" + e} className={"col btn btn-light my-2 d-flex align-items-center justify-content-center " + styles.HoverCursorPointer}>
+                                                                <div className="d-flex align-items-center m-0 p-0 justify-content-center">
+                                                                    <FontAwesomeIcon className={i["style"]} icon={i["icono"]} />
+                                                                    <span className="h5 m-0 p-0">{i["mensaje"]}</span>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
                                             </div>
-                                        )
-                                    })
-                                }
+                                        </div>
 
-                            </div>
+                                        <div className="container-fluid m-0 p-0 d-flex justify-content-center align-items-center text-center">
+                                            <div className="row g-0 m-0 p-0 gx-5">
+                                                {
+                                                    botonesInferiores.map((i, e) => {
+                                                        return (
+                                                            <div className={"col btn btn-light my-2 d-flex justify-content-center align-items-center " + styles.HoverCursorPointer} onClick={i["onclick"]}>
+                                                                <div className={"d-flex m-0 p-0 align-items-center justify-content-center"} >
+                                                                    <FontAwesomeIcon className={i["style"]} icon={i["icono"]} />
+                                                                    <span className="h5 m-0 p-0">{i["mensaje"]}</span>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                            }
 
                             {/* <!-- Alert Opiniones --> */}
                             <div className={"alert alert-light p-0 mt-5 w-100 border-0 " + (mostrarOpiniones ? "d-block" : "d-none")}>

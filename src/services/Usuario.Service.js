@@ -34,7 +34,12 @@ class UsuarioService {
     // Obtener datos importantes después de iniciar sesión
     async getData(nick) {
         let searchUser = await axios.get(`http://localhost:3001/usuario/datos/?nick=${nick}`);
+        return searchUser.data;
+    }
 
+    // Obtener todos los datos de un usuario para la sección de ajustes
+    async getAllData(nick) {
+        let searchUser = await axios.get(`http://localhost:3001/usuario/all/?nick=${nick}`);
         return searchUser.data;
     }
 

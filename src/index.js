@@ -19,6 +19,7 @@ import QuienesSomos from './pages/QuienesSomos/QuienesSomos';
 import Trato from './pages/Trato/Trato';
 import MetodosPagos from './pages/MetodosPagos/MetodosPagos';
 import BusquedaEditores from './pages/BusquedaEditores/BusquedaEditores';
+import Ajustes from './pages/Ajustes/Ajustes';
 
 const router = createBrowserRouter([ 
   {
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
   {
     path: "/busqueda-editores",
     element: <BusquedaEditores />
+  },
+  {
+    path: "/ajustes",
+    element: <Ajustes />
   }
 ]);
 

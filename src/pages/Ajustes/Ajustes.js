@@ -15,6 +15,7 @@ import ProyectoService from '../../services/Proyecto.Service';
 const Ajustes = () => {
   const [cookies, setCookies] = useCookies(["nick"]);
   const navigate = useNavigate();
+  const urlVideos = "C:/Users/Juan/Documents/editors-corp-server/public/";
 
   // Datos del editor
   const [name, setName] = useState("");
@@ -80,9 +81,28 @@ const Ajustes = () => {
   }
 
   function handleFile(e) {
-    console.log(e.target);
+    setFile(e.target.files[0]);
+  }
 
-    setFile(e.target.value);
+  function addProject(e) {
+    e.preventDefault();
+
+    let data = {
+      "nick": nickname,
+      "titulo": title,
+      "descripcion": description,
+      "video": file
+    };
+
+    ProyectoService.postProjectNick(data)
+      .then(res => {
+        console.log("res project service");
+        console.log(res);
+      })
+      .catch(err => {
+        console.log("err project service");
+        console.log(err);
+      })
   }
 
 
@@ -104,11 +124,13 @@ const Ajustes = () => {
           .catch(err => {
             console.log("err");
             console.log(err);
-          })
+          });
 
         await ProyectoService.getProjectsNick(theNick)
           .then(res => {
-            setTheProjects(res);
+            console.log("res");
+            console.log(res);
+            setTheProjects(res.data);
           })
           .catch(err => {
             console.log("err projects");
@@ -221,18 +243,24 @@ const Ajustes = () => {
 
             <div className="form-group mb-3">
               <label className="form-label" htmlFor="file">Agrega tu archivo de video aquí</label>
-              <input className="form-control" type="file" name="file" id="file" onChange={handleFile}/>
+              <input className="form-control" type="file" name="file" id="file" onChange={handleFile} />
+            </div>
+
+            <div className="form-group mb-3">
+              <button className="btn btn-primary" onClick={addProject}>Agregar proyecto</button>
             </div>
           </form>
 
           {
             theProjects.length > 0 ?
               theProjects.map((i, e) => {
-                <div>
-                  <h5>{i["titulo"]}</h5>
-                  <p>{i["descripcion"]}</p>
-                  <video src={i["urlVideo"]}></video>
-                </div>
+                return (
+                  <div key={"videos" + e}>
+                    <h5>{i["titulo"]}</h5>
+                    <p>{i["descripcion"]}</p>
+                    <video src={urlVideos + `${nickname}/` + i["nombreVideo"]}></video>
+                  </div>
+                )
               })
               :
               <p>Aún no tienes ningún proyecto en tu perfil.</p>

@@ -26,8 +26,6 @@ import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { faScrewdriver } from '@fortawesome/free-solid-svg-icons';
 
-// Videos
-
 const Perfil = () => {
     // Cuando se busca un usuario,
     // se almacenará su nick en esta variable.

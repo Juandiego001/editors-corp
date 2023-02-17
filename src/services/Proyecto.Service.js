@@ -17,6 +17,16 @@ class ProyectoService {
         return projectAdded.data;
     }
 
+    async deleteProjectNick(_id) {
+        let data = {
+            _id
+        };
+        let projectDeleted = await axios.delete("http://localhost:3001/proyecto", {
+            params: data
+        });
+        return projectDeleted.data;
+    }
+
 }
 
 export default new ProyectoService();

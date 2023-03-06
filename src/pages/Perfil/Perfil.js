@@ -35,6 +35,11 @@ const Perfil = () => {
     const [nick, setNick] = useState("");
     const [sameNick, setSameNick] = useState(true);
     const [biography, setBiography] = useState("");
+
+    // Para los proyectos de video
+    const [theProjects, setTheProjects] = useState([]);
+    const urlVideos = "http://localhost:3001/";
+
     const [cookies, setCookies] = useCookies(["nick"]);
     const [mostrarOpiniones, setMostrarOpiniones] = useState(false);
     const [mostrarProyectos, setMostrarProyectos] = useState(false);
@@ -68,7 +73,7 @@ const Perfil = () => {
         {
             "mensaje": "Mostrar proyectos",
             "icono": faBriefcase,
-            "style": "h1 m-0 p-0 me-2 text-success",
+            "style": "h1 m-0 p-0 me-2 text-primary",
             "onclick": handleMostrarProyectos
         }
     ];
@@ -83,7 +88,7 @@ const Perfil = () => {
         {
             "mensaje": "Mostrar proyectos",
             "icono": faBriefcase,
-            "style": "h1 m-0 p-0 me-2 text-success",
+            "style": "h1 m-0 p-0 me-2 text-primary",
             "onclick": handleMostrarProyectos
         },
         {
@@ -123,10 +128,12 @@ const Perfil = () => {
 
             async function searchUser() {
                 let userData = await UsuarioService.getData(sameNick ? theNick : nickQuery);
+                console.log({ userData });
 
                 if (userData.code == 200) {
                     setName(userData.nombre + " " + userData.apellido);
                     setBiography(userData.biografia);
+                    setTheProjects(userData.videos);
                 } else {
                     setUserExists(false);
                 }
@@ -274,36 +281,42 @@ const Perfil = () => {
 
                             {/* <!-- Div de los proyectos personales --> */}
                             <div className={"alert p-0 m-0 mt-5 w-100 border-0 " + (mostrarProyectos ? "d-block" : "d-none")}>
-                                {/* <!-- Información video + video #1 --> */}
-                                <div className="row w-100 p-0 bg-primary py-3 m-0">
-                                    {/* <!-- Información acerca del video --> */}
-                                    <div className="col d-flex justify-content-center align-items-center">
-                                        {/* <!-- Titulo --> */}
-                                        <div className="row">
-                                            <h2 className="text-light text-center">
-                                                Titulo del video
-                                            </h2>
+                                {
+                                    theProjects.length > 0 ?
+                                        theProjects.map((i, e) => {
+                                            return (
+                                                <div key={"proyecto" + nick + e} className="row w-100 p-0 bg-primary py-3 m-0">
+                                                    <div className="col d-flex justify-content-center align-items-center">
+                                                        {/* <!-- Titulo --> */}
+                                                        <div className="row">
+                                                            <h2 className="text-light text-center">
+                                                                {i.titulo}
+                                                            </h2>
 
-                                            {/* <!-- Descripción --> */}
-                                            <h3 className="text-light text-center">
-                                                Descripción
-                                            </h3>
+                                                            {/* <!-- Descripción --> */}
+                                                            <h3 className="text-light text-center">
+                                                                Descripción
+                                                            </h3>
 
-                                            <p className="text-light text-center">
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                Esse aut vitae debitis mollitia qui praesentium ipsum laborum unde eos, provident minima quod
-                                                asperiores animi eveniet reprehenderit, ducimus quae inventore libero.
-                                            </p>
-                                        </div>
-                                    </div>
+                                                            <p className="text-light text-center">
+                                                                {i.descripcion}
+                                                            </p>
+                                                        </div>
+                                                    </div>
 
-                                    {/* <!-- Video --> */}
-                                    <div className="col p-0 d-flex justify-content-center align-items-center">
-                                        <video className="w-75" controls>
-                                            <source src="/videos/video_ejemplo.mp4" type="video/mp4" />
-                                        </video>
-                                    </div>
-                                </div>
+                                                    <div className="col p-0 d-flex justify-content-center align-items-center">
+                                                        <video className="w-75" controls>
+                                                            <source src={urlVideos + `${nick}/` + i["nombreVideo"]} type="video/mp4" />
+                                                        </video>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                        :
+                                        <h2 className="text-light text-center">
+                                            Agrega proyectos en ajustes para visualizarlos aquí y mostrarlos a quienes te vean.
+                                        </h2>
+                                }
                             </div>
 
                             {/* <!-- Datos del editor --> */}

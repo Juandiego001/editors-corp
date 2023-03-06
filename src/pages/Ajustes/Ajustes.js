@@ -139,7 +139,7 @@ const Ajustes = () => {
           let allProjects = [...theProjects];
           allProjects.push(res.data);
           setTheProjects(allProjects);
-          showToastError("¡Se agrego el proyecto con éxito!");
+          showToastSuccess("¡Se agrego el proyecto con éxito!");
         } else {
           // Mensaje de error ya que no se pudo agregar el 
           // proyecto en la base de datos o servidor

@@ -41,7 +41,7 @@ const Ajustes = () => {
   const [file, setFile] = useState("");
 
   // Modals
-  const [showModalDeleteProject, setShowModalDeleteProject] = useState("");
+  const [idDeleteProject, setIdDeleteProject] = useState("");
 
   // Handles
   function handleEmail(e) {
@@ -95,7 +95,7 @@ const Ajustes = () => {
 
   // Para mostrar/ocultar el modal de editar un proyecto
   function handleShowModalDeleteProject(_id) {
-    setShowModalDeleteProject(_id);
+    setIdDeleteProject(_id);
   }
 
   // Para editar un proyecto.
@@ -106,16 +106,28 @@ const Ajustes = () => {
 
   // Para eliminar un proyecto
   function deleteProject() {
-    ProyectoService.deleteProjectNick(showModalDeleteProject)
+    let allTheProjects = [...theProjects];
+
+    ProyectoService.deleteProjectNick(idDeleteProject)
       .then(res => {
         if (res.code == 200) {
-          showToastSuccess("Proyecto eliminado con éxito");
+
+          for (let i = 0; allTheProjects.length; i++) {
+            let e = allTheProjects[i];
+            if (e._id == idDeleteProject) {
+              allTheProjects.splice(i, 1);
+            }
+          }
+
+          setTheProjects(allTheProjects);
+          showToastSuccess("Proyecto eliminado con éxito.");
+
         } else {
-          showToastError("No se logró eliminar el proyecto");
+          showToastError("No se logró eliminar el proyecto.");
         }
         
         // Se oculta nuevamente el modal para eliminar el proyecto
-        setShowModalDeleteProject("");
+        setIdDeleteProject("");
       })
       .catch(err => {
         // Se muestra un mensaje de error al intentar eliminar el proyecto
@@ -148,9 +160,8 @@ const Ajustes = () => {
 
       })
       .catch(err => {
-        showToastError("Ocurrió un error al intentar agregar un nuevo proyecto");
-        console.log("err project service");
-        console.log(err);
+        showToastError("Ocurrió un error al intentar agregar un nuevo proyecto");        
+        // Verificar si se colocará el error
       })
   }
 
@@ -205,8 +216,6 @@ const Ajustes = () => {
 
         await ProyectoService.getProjectsNick(theNick)
           .then(res => {
-            console.log("res");
-            console.log(res);
             setTheProjects(res.data);
           })
           .catch(err => {
@@ -379,7 +388,7 @@ const Ajustes = () => {
       </div>
 
       {/* Modal para confirmar la eliminación de un proyecto */}
-      <div className={"modal fade " + (showModalDeleteProject ? "show d-block   " + styles.ModalBg : "")} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
+      <div className={"modal fade " + (idDeleteProject ? "show d-block   " + styles.ModalBg : "")} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-body">

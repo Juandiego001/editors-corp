@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie';
 import {
     Link,
     useLoaderData,
-    useNavigate
+    useNavigate,
 } from "react-router-dom";
 
 // Custom components
@@ -119,15 +119,16 @@ const Perfil = () => {
         // está visualizando otro perfil de otro editor.
         if (cookies.hasOwnProperty("nick")) {
             let theNick = cookies["nick"];
+            let theSameNick = true;
+            console.log({theNick, theSameNick});
 
-            if (theNick != nickQuery) {
-                setSameNick(false);
-            }
-
-            setNick(sameNick ? theNick : nickQuery);
+            if (theNick != nickQuery) theSameNick = false;
+            
+            setSameNick(theSameNick);
+            setNick(theSameNick ? theNick : nickQuery);
 
             async function searchUser() {
-                let userData = await UsuarioService.getData(sameNick ? theNick : nickQuery);
+                let userData = await UsuarioService.getData(theSameNick ? theNick : nickQuery);
                 console.log({ userData });
 
                 if (userData.code == 200) {
@@ -149,7 +150,7 @@ const Perfil = () => {
             // iniciar sesión antes de poder buscar un editor
             navigate("/");
         }
-    }, []);
+    }, [nickQuery]);
 
     return (
         <>
@@ -220,7 +221,7 @@ const Perfil = () => {
                                                 {
                                                     botonesInferiores.map((i, e) => {
                                                         return (
-                                                            <div className={"col btn btn-light my-2 d-flex justify-content-center align-items-center " + styles.HoverCursorPointer} onClick={i["onclick"]}>
+                                                            <div key={"renderButtonsSameNick" + e} className={"col btn btn-light my-2 d-flex justify-content-center align-items-center " + styles.HoverCursorPointer} onClick={i["onclick"]}>
                                                                 <div className={"d-flex m-0 p-0 align-items-center justify-content-center"} >
                                                                     <FontAwesomeIcon className={i["style"]} icon={i["icono"]} />
                                                                     <span className="h5 m-0 p-0">{i["mensaje"]}</span>
@@ -313,7 +314,7 @@ const Perfil = () => {
                                             )
                                         })
                                         :
-                                        <h2 className="text-light text-center">
+                                        <h2 className="bg-primary p-5 text-light text-center">
                                             Agrega proyectos en ajustes para visualizarlos aquí y mostrarlos a quienes te vean.
                                         </h2>
                                 }

@@ -122,7 +122,7 @@ const BusquedaEditores = () => {
                   {
                     [...editorsFind].map((e, i) => {
                       return (
-                        <>
+                        <div className="row" key={"searchEditorContainer" + i}>
                           <div className="col-3 border border-light d-flex justify-content-center align-items-center py-3">
                             <p className="h6 text-center m-0 p-0">
                               {editorsFind[i]["nick"]}
@@ -140,7 +140,7 @@ const BusquedaEditores = () => {
                           <div className={"col-3 text-center border border-light d-flex justify-content-center align-items-center text-light " + styles.BgCyan900}>
                             Agregar amigo
                           </div>
-                        </>
+                        </div>
                       )
                     })
                   }

@@ -391,12 +391,7 @@ const Registrarse = () => {
           progress: undefined,
           theme: "colored",
         });
-
-        console.log(err);
       })
-
-
-
 
   }
 

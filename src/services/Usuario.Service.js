@@ -13,21 +13,35 @@ class UsuarioService {
                 }
             );
 
-        return existeNick;
+        return existeNick["data"];
+    }
+
+    // Verificar si ya existe un correo
+    async verifyEmail(email) {
+        let emailExists = await axios
+            .get('http://localhost:3001/usuario-verificar-correo',
+                {
+                    params: {
+                        email
+                    }
+                }
+            );
+        
+        return emailExists["data"];
     }
 
     // Iniciar sesión
     async login(nick, contrasena) {
         return await axios
-            .post(`http://localhost:3001/usuario-login`, 
-                {   
+            .post(`http://localhost:3001/usuario-login`,
+                {
                     nick,
                     contrasena
                 });
     }
 
     // Registrarse
-    async singUp(datosJson) {        
+    async singUp(datosJson) {
         return await axios.post('http://localhost:3001/usuario', datosJson);
     }
 

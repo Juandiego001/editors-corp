@@ -35,10 +35,10 @@ const Ajustes = () => {
   const [orgBiography, setOrgBiography] = useState("");
 
   // Datos del editor que pueden cambiar
-  const [name, setName] = useState("");
-  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
   const [nickname, setNickname] = useState("");
   const [categories, setCategories] = useState([]);
   const [biography, setBiography] = useState("");
@@ -51,10 +51,31 @@ const Ajustes = () => {
   const [file, setFile] = useState("");
 
   // Para verificar si hay datos cambiados
+  /*
+    hasChanged[0] -> email
+    hasChanged[1] -> password
+    hasChanged[2] -> name
+    hasChanged[3] -> lastname
+    hasChanged[4] -> nick
+    hasChanged[5] -> categories
+    hasChanged[6] -> biography
+  */
   const [hasChanged, setHasChanged] = useState([0, 0, 0, 0, 0, 0, 0]);
 
+  // Para iterar sobre campo original y campo modificado
+  const [fieldsValues, setFieldsValues] = useState([["El correo", "", ""],
+    ["La contraseña", "", ""],
+    ["El nombre", "", ""],
+    ["El apellido", "", ""],
+    ["El nick", "", ""],
+    [...orgCategories, ...categories],
+    ["La biografía", "", ""]]);
+
   // Modals
+  // Modal para eliminar proyecto
   const [idDeleteProject, setIdDeleteProject] = useState("");
+  // Modal para actualizar datos básicos del usuario
+  const [modalUpdateData, setModalUpdateData] = useState(false);
 
   // Para los toasts
   // Mostrar un error
@@ -95,7 +116,7 @@ const Ajustes = () => {
       draggable: true,
       progress: undefined,
       theme: "colored",
-      });
+    });
   }
 
   // Handles
@@ -208,26 +229,35 @@ const Ajustes = () => {
     setIdDeleteProject(_id);
   }
 
-  // Para actualizar los datos básicos
-  async function updateData() {
-    // Primero se verifica que todos los campos estén completados.
+  async function toggleModalUpdateData(visibility) {
+    // Primero se verifica si lo que se desea hacer
+    // es mostrar el modal o
+    // ocultar el modal.
+    /*
+      visibility -> true: se quiere mostrar el modal
+      visibility -> false: se quiere ocultar el modal
+    */
+    if (!visibility) {
+      setModalUpdateData(false);
+      return;
+    }
+
+    // Luego se verifica que todos los campos estén completados.
     // En caso contrario, se genera un mensaje indicando el error.
-    if (email == "" || 
+    if (email == "" ||
       password == "" ||
       name == "" ||
       lastname == "" ||
       nickname == "" ||
       categories.length == 0 ||
       biography == "") {
-        showToastInfo("Por favor completa todos los campos.");
-        return;
+      showToastInfo("Por favor completa todos los campos.");
+      return;
     }
 
     // Se verifica que el email cambiado no exista
     if (email != orgEmail) {
       let emailExists = await UsuarioService.verifyEmail(email);
-
-      console.log({emailExists});
 
       if (emailExists["data"]) {
         showToastInfo("El correo ingresado ya existe.");
@@ -243,6 +273,74 @@ const Ajustes = () => {
         return;
       }
     }
+
+    let allFields = [["El correo", orgEmail, email],
+      ["La contraseña", orgPassword, password],
+      ["El nombre", orgName, name],
+      ["El apellido", orgLastname, lastname],
+      ["El nick", orgNickname, nickname],
+      [orgCategories, categories],
+      ["La biografía", orgBiography, biography]
+    ];
+
+    setFieldsValues(allFields);
+
+    // Si ha pasado todas las condiciones anteriores,
+    // entonces se puede proceder a realizar
+    // la actualización de datos del usuario.
+    setModalUpdateData(true);
+  }
+
+  // Para actualizar los datos básicos
+  async function updateData() {
+    // Si la contraseña editada es diferente de la contraseña original,
+    // se debe solicitar una confirmación de contraseña
+    // para que la actualización se haga correctamente.
+    if (password != orgPassword) {
+
+    }
+
+    let theData = {
+      "nick": orgNickname,
+      "correo": email,
+      "contrasena": password,
+      "nombre": name,
+      "apellido": lastname,
+      "newNick": nickname,
+      "categorias": categories,
+      "biografia": biography
+    };
+
+    try {
+      let response = await UsuarioService.updateData(theData);
+
+      /*
+        Posible códigos de respuesta:
+        code == 200 -> ¡Los datos se han actualizado con éxito!
+        code == 300 -> Ocurrió un error, por favor intenta nuevamente.
+        code == 500 -> Ocurrió un error en el servidor al intentar actualizar los datos.
+      */
+      if (response["code"] == 200) showToastSuccess("¡Los datos han sido actualizados con éxito!");
+      else if (response["code"] == 300) showToastError("Ocurrió un error, por favor intenta nuevamente.");
+      else showToastError("Ocurrió un error en el servidor al intentar actualizar los datos.");
+
+    } catch (updateDataError) {
+      console.log({ updateDataError });
+      showToastError("Ocurrió un error mientras se intentó actualizar los datos.");
+    }
+  }
+
+  // Para cancelar la actualización de datos
+  // y volver a colocar todos los campos como estaban
+  function cancelUpdateData() {
+    setEmail(orgEmail);
+    setPassword(orgPassword);
+    setName(orgName);
+    setLastname(orgLastname);
+    setNickname(orgNickname);
+    setCategories(...orgCategories);
+    setBiography(orgBiography);
+    setHasChanged([0, 0, 0, 0, 0, 0, 0]);
   }
 
   // Para editar un proyecto.
@@ -321,18 +419,29 @@ const Ajustes = () => {
       async function getAllData() {
         await UsuarioService.getAllData(theNick)
           .then(res => {
-            setOrgEmail(res["correo"]);
-            setEmail(res["correo"]);
-            setOrgPassword(res["contrasena"]);
-            setPassword(res["contrasena"]);
-            setOrgName(res["nombre"]);
-            setName(res["nombre"]);
-            setOrgLastname(res["apellido"]);
-            setLastname(res["apellido"]);
-            setOrgCategories(res["categorias"]);
-            setCategories(res["categorias"]);
-            setOrgBiography(res["biografia"]);
-            setBiography(res["biografia"]);
+            let theEmail = res["correo"];
+            setOrgEmail(theEmail);
+            setEmail(theEmail);
+
+            let thePassword = res["contrasena"];
+            setOrgPassword(thePassword);
+            setPassword(thePassword);
+
+            let theName = res["nombre"];
+            setOrgName(theName);
+            setName(theName);
+
+            let theLastname = res["apellido"];
+            setOrgLastname(theLastname);
+            setLastname(theLastname);
+
+            let theCategories = res["categorias"];
+            setOrgCategories(theCategories);
+            setCategories(theCategories);
+
+            let theBiography = res["biografia"];
+            setOrgBiography(theBiography);
+            setBiography(theBiography);
           })
           .catch(err => {
             console.log("err");
@@ -429,27 +538,27 @@ const Ajustes = () => {
 
                 <div className="form-check">
                   <input className="form-check-input" type="checkbox" value="2" id="arte" checked={categories.includes('2')} onChange={handleCategories}></input>
-                  <label className="form-check-label" htmlFor="cocina">Arte</label>
+                  <label className="form-check-label" htmlFor="arte">Arte</label>
                 </div>
 
                 <div className="form-check">
                   <input className="form-check-input" type="checkbox" value="3" id="infantil" checked={categories.includes('3')} onChange={handleCategories}></input>
-                  <label className="form-check-label" htmlFor="cocina">Infantil</label>
+                  <label className="form-check-label" htmlFor="infantil">Infantil</label>
                 </div>
 
                 <div className="form-check">
                   <input className="form-check-input" type="checkbox" value="4" id="videojuegos" checked={categories.includes('4')} onChange={handleCategories}></input>
-                  <label className="form-check-label" htmlFor="cocina">Videojuegos</label>
+                  <label className="form-check-label" htmlFor="videojuegos">Videojuegos</label>
                 </div>
 
                 <div className="form-check">
                   <input className="form-check-input" type="checkbox" value="5" id="shorts" checked={categories.includes('5')} onChange={handleCategories}></input>
-                  <label className="form-check-label" htmlFor="cocina">Shorts</label>
+                  <label className="form-check-label" htmlFor="shorts">Shorts</label>
                 </div>
 
                 <div className="form-check">
-                  <input className="form-check-input" type="checkbox" value="6" id="Viajes" checked={categories.includes('6')} onChange={handleCategories}></input>
-                  <label className="form-check-label" htmlFor="cocina">Viajes</label>
+                  <input className="form-check-input" type="checkbox" value="6" id="viajes" checked={categories.includes('6')} onChange={handleCategories}></input>
+                  <label className="form-check-label" htmlFor="viajes">Viajes</label>
                 </div>
               </div>
 
@@ -462,10 +571,14 @@ const Ajustes = () => {
             <div className="sticky-bottom bg-light w-100 text-start py-4">
               <button className="btn btn-primary me-2"
                 disabled={hasChanged.includes(1) ? false : true}
-                onClick={updateData}>
+                onClick={() => toggleModalUpdateData(true)}>
                 Actualizar datos
               </button>
-              <button className="btn btn-light">Cancelar</button>
+              <button className="btn btn-light"
+                disabled={hasChanged.includes(1) ? false : true}
+                onClick={cancelUpdateData}>
+                Cancelar
+              </button>
             </div>
 
             <h4 className="mt-5">
@@ -571,6 +684,51 @@ const Ajustes = () => {
       </div>
 
       {/* Modal para confirmar la actualización de los datos */}
+      <div className={"modal fade " + (modalUpdateData ? "show d-block   " + styles.ModalBg : "")} id="modalUpdateData" tabIndex="-1" aria-labelledby="modalUpdateData" aria-hidden="true" role="dialog">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Confirmar actualización de datos</h5>
+            </div>
+            <div className="modal-body">
+              Has modificado:
+              <ul>
+                {
+                  hasChanged.map((e, i) => {
+                    // i != 1 contempla si la contraseña se ha modificado.
+                    // Si la contraseña se ha modificado se solicitará una confirmación
+                    // posterior.
+                    // i != 5 contempla las categorías.
+                    // Cuando se modifical las categorías solo se establece que se han cambiado.
+                    if (e == 1 && i != 1 && i != 5) {
+                      let field = fieldsValues[i][0];
+                      let original = fieldsValues[i][1];
+                      let modified = fieldsValues[i][2];
+
+                      return (
+                        <li key={"modifiedItem" + i}>
+                          {field} de
+                          {' '}<u className="text-break text-wrap">{original}</u>{' '}
+                          a
+                          {' '}<u className="text-break text-wrap">{modified}.</u>
+                        </li>
+                      )
+                    } else if (e == 1 && i == 5) {
+                      return (
+                        <li key={"modifiedItem" + i}>Las <u className="text-break text-wrap">categorias</u>.</li>
+                      )
+                    }
+                  })
+                }
+              </ul>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={() => toggleModalUpdateData(false)} data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" className="btn btn-primary" onClick={updateData}>Actualizar</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <ToastContainer
         position="top-center"

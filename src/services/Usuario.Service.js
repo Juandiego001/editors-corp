@@ -64,6 +64,12 @@ class UsuarioService {
         return searchEditors.data;
     }
 
+    // Para actualizar los datos
+    async updateData(data) {
+        let dataWasUpdated = await axios.put(`http://localhost:3001/usuario`, data);
+        return dataWasUpdated.data;
+    }
+
 }
 
 export default new UsuarioService();

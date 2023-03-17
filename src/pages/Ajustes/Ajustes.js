@@ -21,7 +21,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Ajustes = () => {
-  const [cookies, setCookies] = useCookies(["nick"]);
+  const [cookies, setCookie] = useCookies(["nick"]);
   const navigate = useNavigate();
   const urlVideos = "http://localhost:3001/";
 
@@ -45,10 +45,14 @@ const Ajustes = () => {
   const [theProjects, setTheProjects] = useState([]);
   const [theOpinions, setTheOpinions] = useState([]);
 
+  // Para aceptar la confirmación de datos
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   // Para un único proyecto
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState("");
+  const [nameFile, setNameFile] = useState("");
 
   // Para verificar si hay datos cambiados
   /*
@@ -64,12 +68,12 @@ const Ajustes = () => {
 
   // Para iterar sobre campo original y campo modificado
   const [fieldsValues, setFieldsValues] = useState([["El correo", "", ""],
-    ["La contraseña", "", ""],
-    ["El nombre", "", ""],
-    ["El apellido", "", ""],
-    ["El nick", "", ""],
-    [...orgCategories, ...categories],
-    ["La biografía", "", ""]]);
+  ["La contraseña", "", ""],
+  ["El nombre", "", ""],
+  ["El apellido", "", ""],
+  ["El nick", "", ""],
+  [...orgCategories, ...categories],
+  ["La biografía", "", ""]]);
 
   // Modals
   // Modal para eliminar proyecto
@@ -211,6 +215,12 @@ const Ajustes = () => {
     setBiography(theBiography);
   }
 
+  // Función manejar la variable
+  // de cambiar la contraseña
+  function handleConfirmPassword(e) {
+    setConfirmPassword(e.target.value);
+  }
+
   // Para los proyectos
   function handleTitle(e) {
     setTitle(e.target.value);
@@ -221,11 +231,14 @@ const Ajustes = () => {
   }
 
   function handleFile(e) {
+    console.log({"archivo": e});
     setFile(e.target.files[0]);
+    setNameFile(e.target.value);
   }
 
   // Para mostrar/ocultar el modal de editar un proyecto
   function handleShowModalDeleteProject(_id) {
+    console.log({_id});
     setIdDeleteProject(_id);
   }
 
@@ -275,12 +288,12 @@ const Ajustes = () => {
     }
 
     let allFields = [["El correo", orgEmail, email],
-      ["La contraseña", orgPassword, password],
-      ["El nombre", orgName, name],
-      ["El apellido", orgLastname, lastname],
-      ["El nick", orgNickname, nickname],
-      [orgCategories, categories],
-      ["La biografía", orgBiography, biography]
+    ["La contraseña", orgPassword, password],
+    ["El nombre", orgName, name],
+    ["El apellido", orgLastname, lastname],
+    ["El nick", orgNickname, nickname],
+    [...orgCategories, ...categories],
+    ["La biografía", orgBiography, biography]
     ];
 
     setFieldsValues(allFields);
@@ -293,11 +306,33 @@ const Ajustes = () => {
 
   // Para actualizar los datos básicos
   async function updateData() {
+    // Si no se ha confirmado la contraseña
+    // mostrar el mensaje correspondiente.
+    if (confirmPassword == "" &&
+      password != orgPassword) {
+      showToastInfo("Por favor confirma tu contraseña modificada.");
+      return;
+    }
+
+    if (confirmPassword == "" &&
+      password == orgPassword) {
+      showToastInfo("Por favor confirma tu contraseña.");
+      return;
+    }
+
     // Si la contraseña editada es diferente de la contraseña original,
     // se debe solicitar una confirmación de contraseña
     // para que la actualización se haga correctamente.
-    if (password != orgPassword) {
+    if (confirmPassword != password &&
+      password == orgPassword) {
+      showToastError("Las contraseñas no coinciden.");
+      return;
+    }
 
+    if (confirmPassword != password &&
+      password != orgPassword) {
+      showToastError("Las contraseñas no coinciden.");
+      return;
     }
 
     let theData = {
@@ -320,7 +355,20 @@ const Ajustes = () => {
         code == 300 -> Ocurrió un error, por favor intenta nuevamente.
         code == 500 -> Ocurrió un error en el servidor al intentar actualizar los datos.
       */
-      if (response["code"] == 200) showToastSuccess("¡Los datos han sido actualizados con éxito!");
+      if (response["code"] == 200) {
+        setOrgEmail(email);
+        setOrgPassword(password);
+        setOrgName(name);
+        setOrgLastname(lastname);
+        setOrgNickname(nickname);
+        setCookie("nick", nickname);
+        setOrgCategories(...categories);
+        setOrgBiography(biography);
+        setModalUpdateData(0);
+        setConfirmPassword("");
+        setHasChanged([0, 0, 0, 0, 0, 0, 0]);
+        showToastSuccess("¡Los datos han sido actualizados con éxito!");
+      }
       else if (response["code"] == 300) showToastError("Ocurrió un error, por favor intenta nuevamente.");
       else showToastError("Ocurrió un error en el servidor al intentar actualizar los datos.");
 
@@ -371,13 +419,14 @@ const Ajustes = () => {
           showToastError("No se logró eliminar el proyecto.");
         }
 
-        // Se oculta nuevamente el modal para eliminar el proyecto
-        setIdDeleteProject("");
       })
       .catch(err => {
         // Se muestra un mensaje de error al intentar eliminar el proyecto
         showToastError("Ocurrió un error al intentar eliminar el proyecto");
       })
+
+      // Se oculta nuevamente el modal para eliminar el proyecto
+      setIdDeleteProject("");
   }
 
   function addProject(e) {
@@ -393,6 +442,14 @@ const Ajustes = () => {
     ProyectoService.postProjectNick(data)
       .then(res => {
         if (res.code == 200) {
+          // Se limpian los campos
+          setTitle("");
+          setDescription("");
+          setFile("");
+          setNameFile("");
+
+          console.log({"res.data": res.data});
+
           let allProjects = [...theProjects];
           allProjects.push(res.data);
           setTheProjects(allProjects);
@@ -419,33 +476,42 @@ const Ajustes = () => {
       async function getAllData() {
         await UsuarioService.getAllData(theNick)
           .then(res => {
-            let theEmail = res["correo"];
-            setOrgEmail(theEmail);
-            setEmail(theEmail);
 
-            let thePassword = res["contrasena"];
-            setOrgPassword(thePassword);
-            setPassword(thePassword);
+            if (res["code"] == 200) {
+              let theEmail = res["correo"];
+              setOrgEmail(theEmail);
+              setEmail(theEmail);
 
-            let theName = res["nombre"];
-            setOrgName(theName);
-            setName(theName);
+              let thePassword = res["contrasena"];
+              setOrgPassword(thePassword);
+              setPassword(thePassword);
 
-            let theLastname = res["apellido"];
-            setOrgLastname(theLastname);
-            setLastname(theLastname);
+              let theName = res["nombre"];
+              setOrgName(theName);
+              setName(theName);
 
-            let theCategories = res["categorias"];
-            setOrgCategories(theCategories);
-            setCategories(theCategories);
+              let theLastname = res["apellido"];
+              setOrgLastname(theLastname);
+              setLastname(theLastname);
 
-            let theBiography = res["biografia"];
-            setOrgBiography(theBiography);
-            setBiography(theBiography);
+              let theCategories = res["categorias"];
+              console.log({ theCategories });
+              setOrgCategories(theCategories ? theCategories : []);
+              setCategories(theCategories ? theCategories : []);
+
+              let theBiography = res["biografia"];
+              setOrgBiography(theBiography);
+              setBiography(theBiography);
+            } else {
+              showToastError("Ocurrió un error mientras se intentaron obtener tus datos. " +
+                "Por favor refresca la página.");
+            }
           })
           .catch(err => {
             console.log("err");
             console.log(err);
+            setOrgCategories([]);
+            setCategories([]);
           });
 
         await ProyectoService.getProjectsNick(theNick)
@@ -601,7 +667,7 @@ const Ajustes = () => {
 
               <div className="form-group mb-3">
                 <label className="form-label" htmlFor="file">Agrega tu archivo de video aquí</label>
-                <input className="form-control" type="file" name="file" id="file" onChange={handleFile} />
+                <input className="form-control" type="file" name="file" id="file" value={nameFile} onChange={handleFile} />
               </div>
 
               <div className="form-group mb-3">
@@ -669,7 +735,7 @@ const Ajustes = () => {
       </div>
 
       {/* Modal para confirmar la eliminación de un proyecto */}
-      <div className={"modal fade " + (idDeleteProject ? "show d-block   " + styles.ModalBg : "")} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
+      <div className={"modal fade " + (idDeleteProject ? "show d-block " + styles.ModalBg : "")} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-body">
@@ -713,6 +779,10 @@ const Ajustes = () => {
                           {' '}<u className="text-break text-wrap">{modified}.</u>
                         </li>
                       )
+                    } else if (e == 1 && i == 1) {
+                      return (
+                        <li key={"modifiedItem" + i}>La <u className="text-break text-wrap">contraseña</u>.</li>
+                      )
                     } else if (e == 1 && i == 5) {
                       return (
                         <li key={"modifiedItem" + i}>Las <u className="text-break text-wrap">categorias</u>.</li>
@@ -721,6 +791,22 @@ const Ajustes = () => {
                   })
                 }
               </ul>
+
+              {/*
+                Se debe solicitar al usuario
+                la contraseña modificada o la contraseña actual
+                para confirmar los cambios.
+              */}
+              <div className="my-3">
+                {
+                  password != orgPassword ?
+                    <label className="form-label" htmlFor="confirmPassowrd">Digita la contraseña modificada para continuar</label>
+                    :
+
+                    <label className="form-label" htmlFor="confirmPassowrd">Digita la contraseña para continuar</label>
+                }
+                <input className="form-control" id="confirmPassword" name="confirmPassword" type="password" value={confirmPassword} onChange={handleConfirmPassword} />
+              </div>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" onClick={() => toggleModalUpdateData(false)} data-bs-dismiss="modal">Cancelar</button>

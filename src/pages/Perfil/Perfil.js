@@ -324,7 +324,7 @@ const Perfil = () => {
                             <div className="container-fluid bg-light w-100 p-0 mt-5">
                                 <h2 className="w-100 py-2 text-center">Datos del editor</h2>
                                 <p className="bg-light p-3 text-justify w-75 mx-auto">
-                                    {biography}.
+                                    {biography}
                                 </p>
                             </div>
                         </div>

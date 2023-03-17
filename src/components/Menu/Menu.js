@@ -27,7 +27,7 @@ const Menu = (props) => {
             // Se regresa 
             navigate("/login");
         }
-    }, []);
+    }, [cookies]);
 
     return (
         <nav className="navbar navbar-expand-lg text-light bg-primary m-0 p-0 py-2">

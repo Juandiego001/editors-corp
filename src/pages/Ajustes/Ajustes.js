@@ -54,6 +54,12 @@ const Ajustes = () => {
   const [file, setFile] = useState("");
   const [nameFile, setNameFile] = useState("");
 
+  // Para cambiar los datos de un proyecto
+  const [newProjectTitle, setNewProjectTitle] = useState("");
+  const [newProjectDescription, setNewProjectDescription] = useState("");
+  const [newProjectFile, setNewProjectFile] = useState("");
+  const [newProjectNameFile, setNewProjectNameFile] = useState("");
+
   // Para verificar si hay datos cambiados
   /*
     hasChanged[0] -> email
@@ -76,6 +82,8 @@ const Ajustes = () => {
   ["La biografía", "", ""]]);
 
   // Modals
+  // Modal para editar proyecto
+  const [idUpdateProject, setIdUpdateProject] = useState("");
   // Modal para eliminar proyecto
   const [idDeleteProject, setIdDeleteProject] = useState("");
   // Modal para actualizar datos básicos del usuario
@@ -231,14 +239,35 @@ const Ajustes = () => {
   }
 
   function handleFile(e) {
-    console.log({"archivo": e});
     setFile(e.target.files[0]);
     setNameFile(e.target.value);
   }
 
-  // Para mostrar/ocultar el modal de editar un proyecto
-  function handleShowModalDeleteProject(_id) {
+  // Para las ediciones de proyectos.
+  function handleNewProjectTitle(e) {
+    setNewProjectTitle(e.target.value);
+  }
+
+  function handleNewProjectDescription(e) {
+    setNewProjectDescription(e.target.value);
+  }
+
+  function handleNewProjectFile(e) {
+    console.log({"newProjectFile": e});
+    setNewProjectFile(e.target.files[0]);
+    setNewProjectNameFile(e.target.value);
+  }
+
+  // Para mostrar el modal de editar un proyecto
+  function handleShowModalUpdateProject(_id, theTitle, theDescription) {
     console.log({_id});
+    setNewProjectTitle(theTitle);
+    setNewProjectDescription(theDescription);
+    setIdUpdateProject(_id);
+  }
+
+  // Para mostrar el modal de eliminar un proyecto
+  function handleShowModalDeleteProject(_id) {
     setIdDeleteProject(_id);
   }
 
@@ -393,7 +422,7 @@ const Ajustes = () => {
 
   // Para editar un proyecto.
   // Lo que se hace es que se actualiza 
-  function editProject() {
+  function updateProject() {
 
   }
 
@@ -689,7 +718,7 @@ const Ajustes = () => {
                         </div>
                         <div className="col-2 row m-0 p-0 g-0">
                           <div className="col d-flex justify-content-end align-items-center">
-                            <button className="btn btn-primary">
+                            <button className="btn btn-primary" onClick={() => handleShowModalUpdateProject(i["_id"], i["titulo"], i["descripcion"])}>
                               <FontAwesomeIcon icon={faPencil} />
                             </button>
                           </div>
@@ -734,8 +763,37 @@ const Ajustes = () => {
         <Footer />
       </div>
 
+      {/* Modal para editar un proyecto */}
+      <div className={"modal fade " + (idUpdateProject ? "show d-block " + styles.ModalBg : "")} id="updateProjectModal" tabIndex="-1" aria-labelledby="updateProjectModal" aria-hidden="true" role="dialog">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+            <h5 className="modal-title">Editar proyecto</h5>
+            </div>
+            <div className="modal-body">
+              <div className="form-group mb-3">
+                <label className="form-label" htmlFor="inputChangeTitle">Título del proyecto</label>
+                <input className="form-control" id="inputChangeTitle" name="inputChangeTitle" type="text" value={newProjectTitle} onChange={handleNewProjectTitle} />
+              </div>
+              <div className="form-group mb-3">
+                <label className="form-label" htmlFor="areaChangeDescription">Descripción del proyecto</label>
+                <textarea className="form-control" id="areaChangeDescription" name="areaChangeDescription" value={newProjectDescription} onChange={handleNewProjectDescription}></textarea>
+              </div>
+              <div className="form-group mb-3">
+                <label className="form-label" htmlFor="fileChange">Agregar un video diferente</label>
+                <input className="form-control" id="fileChange" name="fileChange" type="file" value={newProjectNameFile} onChange={handleNewProjectFile} />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={() => handleShowModalUpdateProject("", "", "")} data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" className="btn btn-primary" onClick={updateProject}>Actualizar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Modal para confirmar la eliminación de un proyecto */}
-      <div className={"modal fade " + (idDeleteProject ? "show d-block " + styles.ModalBg : "")} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
+      <div className={"modal fade " + (idDeleteProject ? "show d-block " + styles.ModalBg : "")} id="deleteProjectModal" tabIndex="-1" aria-labelledby="deleteProjectModal" aria-hidden="true" role="dialog">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-body">

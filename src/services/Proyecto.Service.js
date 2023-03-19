@@ -17,7 +17,20 @@ class ProyectoService {
         return projectAdded.data;
     }
 
-    async deleteProjectNick(_id) {
+    async putProjectId(data) {
+
+        console.log({data});
+
+        let projectUpdated = await axios.put(`http://localhost:3001/proyecto`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        });
+
+        return projectUpdated.data;
+    }
+
+    async deleteProjectId(_id) {
         let data = {
             _id
         };

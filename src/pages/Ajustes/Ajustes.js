@@ -60,6 +60,10 @@ const Ajustes = () => {
   const [newProjectFile, setNewProjectFile] = useState("");
   const [newProjectNameFile, setNewProjectNameFile] = useState("");
 
+  // Tomamos el nombre que se encuentra en la base de datos 
+  // para actualizar el archivo que se encuentra en el servidor
+  const [serverNameFile, setServerNameFile] = useState("");
+
   // Para verificar si hay datos cambiados
   /*
     hasChanged[0] -> email
@@ -259,11 +263,17 @@ const Ajustes = () => {
   }
 
   // Para mostrar el modal de editar un proyecto
-  function handleShowModalUpdateProject(_id, theTitle, theDescription) {
+  function handleShowModalUpdateProject(_id, theTitle, theDescription, theNameVideo) {
     console.log({_id});
+    setServerNameFile(theNameVideo);
     setNewProjectTitle(theTitle);
     setNewProjectDescription(theDescription);
     setIdUpdateProject(_id);
+
+    if (_id == '') {
+      setNewProjectFile("");
+      setNewProjectNameFile("");
+    }
   }
 
   // Para mostrar el modal de eliminar un proyecto
@@ -422,15 +432,55 @@ const Ajustes = () => {
 
   // Para editar un proyecto.
   // Lo que se hace es que se actualiza 
-  function updateProject() {
+  async function updateProject() {
+    try {
+      let data = {
+        "nick": nickname,
+        "_id": idUpdateProject,
+        "titulo": newProjectTitle,
+        "descripcion": newProjectDescription,
+        // Nombre del archivo en el servidor para reemplazar
+        // el archivo.
+        "nombreVideo": serverNameFile,
+        "video": newProjectFile
+      };
 
+      let response = await ProyectoService.putProjectId(data);
+
+      console.log({response});
+
+      if (response["code"] == 200) {
+        // Se debe actualizar el theProjects
+        let allProjects = [...theProjects];
+
+        allProjects.forEach((e, i) => {
+          if (e["_id"] == idUpdateProject) {
+            e["titulo"] = newProjectTitle;
+            e["descripcion"] = newProjectDescription;
+            e["nombreVideo"] += "?" + Date.now();
+          }
+        });
+        
+        setTheProjects(allProjects);
+        showToastSuccess("¡El proyecto ha sido actualizado con éxito!");
+      } else {
+        showToastError("Ocurrió un error al intentar actualizar el proyecto.");
+      } 
+    } catch (errorFromUpdateProject) {
+      console.log({errorFromUpdateProject});
+      showToastError("Ocurrió un error al intentar actualizar el proyecto.");
+    }
+
+    setIdUpdateProject("");
+    setNewProjectNameFile("");
+    setNewProjectFile("");
   }
 
   // Para eliminar un proyecto
   function deleteProject() {
     let allTheProjects = [...theProjects];
 
-    ProyectoService.deleteProjectNick(idDeleteProject)
+    ProyectoService.deleteProjectId(idDeleteProject)
       .then(res => {
         if (res.code == 200) {
 
@@ -545,6 +595,7 @@ const Ajustes = () => {
 
         await ProyectoService.getProjectsNick(theNick)
           .then(res => {
+            console.log({"projects:": res});
             setTheProjects(res.data);
           })
           .catch(err => {
@@ -718,7 +769,7 @@ const Ajustes = () => {
                         </div>
                         <div className="col-2 row m-0 p-0 g-0">
                           <div className="col d-flex justify-content-end align-items-center">
-                            <button className="btn btn-primary" onClick={() => handleShowModalUpdateProject(i["_id"], i["titulo"], i["descripcion"])}>
+                            <button className="btn btn-primary" onClick={() => handleShowModalUpdateProject(i["_id"], i["titulo"], i["descripcion"], i["nombreVideo"])}>
                               <FontAwesomeIcon icon={faPencil} />
                             </button>
                           </div>
@@ -785,7 +836,7 @@ const Ajustes = () => {
               </div>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={() => handleShowModalUpdateProject("", "", "")} data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" className="btn btn-secondary" onClick={() => handleShowModalUpdateProject("", "", "", "")} data-bs-dismiss="modal">Cancelar</button>
               <button type="button" className="btn btn-primary" onClick={updateProject}>Actualizar</button>
             </div>
           </div>

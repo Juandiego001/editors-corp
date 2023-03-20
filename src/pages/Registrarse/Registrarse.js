@@ -200,199 +200,117 @@ const Registrarse = () => {
     }
   }
 
+  function showToastError(message) {
+    toast.error(`${message}`, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  }
+
+  function showToastSuccess(message) {
+    toast.success(`${message}`, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  }
+
   async function iniciarRegistro() {
     if (correo == "") {
-      toast.error('Error. Verifica tu correo.', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showToastError('Error. Verifica tu correo.');
       setCCorreo(1);
       return false;
     }
 
     if (contrasena == "") {
-      toast.error('Error. Verifica tu contraseña.', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showToastError('Error. Verifica tu contraseña.');
       setCContrasena(1);
       return false;
     }
 
     if (contrasena1 == "") {
-      toast.error('Error. Verifica la confirmación de tu contraseña.', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showToastError('Error. Verifica la confirmación de tu contraseña.')
       setCContrasena1(1);
       return false;
     }
 
     if (contrasena != contrasena1) {
-      toast.error('Error. Verifica ambas contraseñas.', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showToastError('Error. Verifica ambas contraseñas.');
       setCContrasena(3);
       setCContrasena1(3);
       return false;
     }
 
     if (nick == "") {
-      toast.error('Error. Verifica tu nick.', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showToastError('Error. Verifica tu nick.');
       setCNick(1);
       return false;
     } else {
       let existeNick = await verificarNick();
 
       if (existeNick == 1) {
-        toast.error('Error. El nick digitado ya existe.', {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        showToastError('Error. El nick digitado ya existe.');
         return false;
       } else if (existeNick == 2) {
-        toast.error('Ocurrió un error en el servidor mientras se verificaba el nick. Lo solucionaremos lo más pronto posible.', {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-
+        showToastError('Ocurrió un error en el servidor mientras se verificaba el nick. Lo solucionaremos lo más pronto posible.');
         return false;
       }
     }
 
     if (nombre == "") {
-      toast.error('Error. Verifica tu nombre.', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showToastError('Error. Verifica tu nombre.');
       setCNombre(1);
       return false;
     }
 
     if (apellido == "") {
-      toast.error('Error. Verifica tu apellido.', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showToastError('Error. Verifica tu apellido.')
       setCApellido(1);
       return false;
     }
 
     if (categorias.length == 0) {
-      toast.error('Error. Selecciona por lo menos una categoría.', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      showToastError('Error. Selecciona por lo menos una categoría.');
       setCCategorias(1);
       return false;
     }
 
-    UsuarioService.singUp({
-      correo: correo,
-      contrasena: contrasena,
-      nick: nick,
-      nombre: nombre,
-      apellido: apellido,
-      biografia: biografia,
-      categorias: categorias
-    })
-      .then(data => {
-        toast.success("¡Registro completado con éxito!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-
-        new Promise((resolve, reject) => setTimeout(resolve, 2000));
-
+    try {
+      let response = await UsuarioService.singUp({
+          correo: correo,
+          contrasena: contrasena,
+          nick: nick,
+          nombre: nombre,
+          apellido: apellido,
+          biografia: biografia,
+          categorias: categorias
+        })
+      
+      if (response["code"] == 200) {
+        showToastSuccess("¡Registro completado con éxito! En un momento serás trasladado a la página principal.");
+        await new Promise((resolve, reject) => setTimeout(resolve, 5000));
         setCookies('nick', nick, {
           path: '/'
         });
-
         navigate('/');
-      })
-      .catch(err => {
-        toast.error('Ocurrió un error en el servidor. Lo solucionaremos lo más pronto posible.', {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      })
-
+      } else {
+        showToastError("Ocurrió un error en el servidor al intentar crear un usuario.");
+      }
+    } catch (errorRegisterUser) {
+      console.log({ errorRegisterUser });
+      showToastError('Ocurrió un error en el servidor. Lo solucionaremos lo más pronto posible.');
+    }
   }
 
   useEffect(() => {

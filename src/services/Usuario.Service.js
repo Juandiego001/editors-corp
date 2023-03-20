@@ -42,7 +42,9 @@ class UsuarioService {
 
     // Registrarse
     async singUp(datosJson) {
-        return await axios.post('http://localhost:3001/usuario', datosJson);
+        let singUpUser = await axios.post('http://localhost:3001/usuario', datosJson);
+        console.log({singUpUser});
+        return singUpUser.data;
     }
 
     // Obtener datos importantes después de iniciar sesión

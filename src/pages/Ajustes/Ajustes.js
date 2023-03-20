@@ -64,6 +64,9 @@ const Ajustes = () => {
   // para actualizar el archivo que se encuentra en el servidor
   const [serverNameFile, setServerNameFile] = useState("");
 
+  // Para actualizar el video de un proyecto.
+  const [videosUrls, setVideosUrls] = useState({});
+
   // Para verificar si hay datos cambiados
   /*
     hasChanged[0] -> email
@@ -453,16 +456,26 @@ const Ajustes = () => {
         // Se debe actualizar el theProjects
         let allProjects = [...theProjects];
 
-        allProjects.forEach((e, i) => {
-          if (e["_id"] == idUpdateProject) {
-            e["titulo"] = newProjectTitle;
-            e["descripcion"] = newProjectDescription;
-            e["nombreVideo"] += "?" + Date.now();
-          }
-        });
+
         
-        setTheProjects(allProjects);
+        // Para actualizar los videos
+        let allVideosUrls = videosUrls;
+        for (let i = 0; i < allProjects.length; i++) {
+          let theProject = allProjects[i];
+          if (theProject["_id"] == idUpdateProject) {
+            theProject["titulo"] = newProjectTitle;
+            theProject["descripcion"] = newProjectDescription;
+            allVideosUrls[idUpdateProject] = <video className="img-fluid" controls>
+                <source src={"http://localhost:3001/" + `${theProject["nick"]}/` + theProject["nombreVideo"] + "?" + theProject["fechaModificacion"]} type="video/mp4"></source>
+              </video>;
+            break;
+          }
+        }
+        
+        console.log({allVideosUrls});
+        setVideosUrls(allVideosUrls);
         showToastSuccess("¡El proyecto ha sido actualizado con éxito!");
+        setTheProjects(allProjects);
       } else {
         showToastError("Ocurrió un error al intentar actualizar el proyecto.");
       } 
@@ -595,8 +608,23 @@ const Ajustes = () => {
 
         await ProyectoService.getProjectsNick(theNick)
           .then(res => {
-            console.log({"projects:": res});
-            setTheProjects(res.data);
+            let allProjects = res.data;
+            
+            // Se toman como referencia los ids de cada proyecto
+            // en caso de que se desee actualizar el video
+            // de un proyecto.
+            let allVideosUrls = videosUrls;
+            for (let i = 0; i < allProjects.length; i++) {
+              let everyProject = allProjects[i];
+              let idEveryProject = everyProject["_id"];
+              allVideosUrls[idEveryProject] = <video className="img-fluid" controls>
+                  <source src={"http://localhost:3001/" + `${everyProject["nick"]}/` + everyProject["nombreVideo"] + "?" + everyProject["fechaModificacion"]} type="video/mp4"></source>
+                </video>;
+              console.log({allVideosUrls});
+            }
+
+            setVideosUrls(allVideosUrls);
+            setTheProjects(allProjects);
           })
           .catch(err => {
             console.log("err projects");
@@ -780,9 +808,7 @@ const Ajustes = () => {
                           </div>
                         </div>
                       </div>
-                      <video className="img-fluid" controls>
-                        <source src={urlVideos + `${nickname}/` + i["nombreVideo"]} type="video/mp4"></source>
-                      </video>
+                      {videosUrls[i["_id"]]}
                     </div>
                   )
                 })

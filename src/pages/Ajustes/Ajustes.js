@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from './Ajustes.module.css';
 import { useCookies } from 'react-cookie';
@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Custom components
 import Menu from '../../components/Menu/Menu';
 import Footer from '../../components/Footer/Footer';
+import VideoProjectUser from '../../components/VideoProjectUser/VideoProjectUser';
 
 // Services
 import UsuarioService from '../../services/Usuario.Service';
@@ -63,9 +64,6 @@ const Ajustes = () => {
   // Tomamos el nombre que se encuentra en la base de datos 
   // para actualizar el archivo que se encuentra en el servidor
   const [serverNameFile, setServerNameFile] = useState("");
-
-  // Para actualizar el video de un proyecto.
-  const [videosUrls, setVideosUrls] = useState({});
 
   // Para verificar si hay datos cambiados
   /*
@@ -267,7 +265,6 @@ const Ajustes = () => {
 
   // Para mostrar el modal de editar un proyecto
   function handleShowModalUpdateProject(_id, theTitle, theDescription, theNameVideo) {
-    console.log({_id});
     setServerNameFile(theNameVideo);
     setNewProjectTitle(theTitle);
     setNewProjectDescription(theDescription);
@@ -450,30 +447,23 @@ const Ajustes = () => {
 
       let response = await ProyectoService.putProjectId(data);
 
-      console.log({response});
+      console.log({"responseProject": response});
 
       if (response["code"] == 200) {
         // Se debe actualizar el theProjects
+        let fechaModificacion = response["data"];
         let allProjects = [...theProjects];
 
-
-        
-        // Para actualizar los videos
-        let allVideosUrls = videosUrls;
         for (let i = 0; i < allProjects.length; i++) {
           let theProject = allProjects[i];
           if (theProject["_id"] == idUpdateProject) {
             theProject["titulo"] = newProjectTitle;
             theProject["descripcion"] = newProjectDescription;
-            allVideosUrls[idUpdateProject] = <video className="img-fluid" controls>
-                <source src={"http://localhost:3001/" + `${theProject["nick"]}/` + theProject["nombreVideo"] + "?" + theProject["fechaModificacion"]} type="video/mp4"></source>
-              </video>;
-            break;
+            theProject["fechaModificacion"] = fechaModificacion;
           }
+          allProjects[i] = theProject;
         }
         
-        console.log({allVideosUrls});
-        setVideosUrls(allVideosUrls);
         showToastSuccess("¡El proyecto ha sido actualizado con éxito!");
         setTheProjects(allProjects);
       } else {
@@ -609,21 +599,6 @@ const Ajustes = () => {
         await ProyectoService.getProjectsNick(theNick)
           .then(res => {
             let allProjects = res.data;
-            
-            // Se toman como referencia los ids de cada proyecto
-            // en caso de que se desee actualizar el video
-            // de un proyecto.
-            let allVideosUrls = videosUrls;
-            for (let i = 0; i < allProjects.length; i++) {
-              let everyProject = allProjects[i];
-              let idEveryProject = everyProject["_id"];
-              allVideosUrls[idEveryProject] = <video className="img-fluid" controls>
-                  <source src={"http://localhost:3001/" + `${everyProject["nick"]}/` + everyProject["nombreVideo"] + "?" + everyProject["fechaModificacion"]} type="video/mp4"></source>
-                </video>;
-              console.log({allVideosUrls});
-            }
-
-            setVideosUrls(allVideosUrls);
             setTheProjects(allProjects);
           })
           .catch(err => {
@@ -797,9 +772,9 @@ const Ajustes = () => {
                         </div>
                         <div className="col-2 row m-0 p-0 g-0">
                           <div className="col d-flex justify-content-end align-items-center">
-                            <button className="btn btn-primary" onClick={() => handleShowModalUpdateProject(i["_id"], i["titulo"], i["descripcion"], i["nombreVideo"])}>
+                            <span className="btn btn-primary" onClick={() => handleShowModalUpdateProject(i["_id"], i["titulo"], i["descripcion"], i["nombreVideo"])}>
                               <FontAwesomeIcon icon={faPencil} />
-                            </button>
+                            </span>
                           </div>
                           <div className="col d-flex justify-content-end align-items-center">
                             <button className="btn btn-danger" onClick={() => handleShowModalDeleteProject(i["_id"])}>
@@ -808,7 +783,7 @@ const Ajustes = () => {
                           </div>
                         </div>
                       </div>
-                      {videosUrls[i["_id"]]}
+                      <VideoProjectUser nick={nickname} nameVideo={i["nombreVideo"]} dateVideo={i["fechaModificacion"]} />
                     </div>
                   )
                 })
